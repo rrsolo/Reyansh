@@ -1,25 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cursor AI</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Bubblio - Cool Videos for Epic Kids</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Cursor AI</h1>
-      <p>Your coding co-pilot</p>
-    </header>
-    <main id="chat-box">
-      <div class="message ai">Hello! I'm Cursor AI. How can I help you code today?</div>
-    </main>
-    <footer>
-      <input type="text" id="user-input" placeholder="Type your question..." />
-      <button onclick="sendMessage()">Send</button>
-    </footer>
-  </div>
-  <script src="script.js"></script>
+    <!-- Animated Background -->
+    <div class="animated-background">
+        <div class="emoji-float">😎</div>
+        <div class="emoji-float">🥶</div>
+        <div class="emoji-float">🗿</div>
+        <div class="emoji-float">🫠</div>
+        <div class="emoji-float">🦕</div>
+        <div class="emoji-float">💥</div>
+        <div class="emoji-float">☁</div>
+        <div class="emoji-float">☄️</div>
+        <div class="emoji-float">🐥</div>
+        <div class="emoji-float">🦴</div>
+        <div class="emoji-float">🎂</div>
+        <div class="emoji-float">🍼</div>
+        <div class="emoji-float">🍪</div>
+        <div class="emoji-float">🧊</div>
+        <div class="emoji-float">🏆</div>
+    </div>
+
+    <!-- Bubble Animation Container -->
+    <div id="bubble-animation" class="bubble-animation"></div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <div class="mascot-container">
+                    <div class="mascot-character">😎</div>
+                    <div class="mascot-bounce">🎬</div>
+                    <div class="mascot-character">🗿</div>
+                </div>
+                <h1 class="app-title">
+                    <div class="bubblio-logo">Bubblio</div>
+                </h1>
+                <p class="app-subtitle">Cool Videos for Epic Kids! 😎</p>
+                
+                <div class="access-options">
+                    <button class="access-btn guest-btn focusable" onclick="startGuestMode()" tabindex="0">
+                        <div class="btn-icon">😎</div>
+                        <div class="btn-text">
+                            <span class="btn-title">Guest Mode</span>
+                            <span class="btn-subtitle">Jump in and start watching!</span>
+                        </div>
+                    </button>
+                    
+                    <button class="access-btn profile-btn focusable" onclick="showProfileSetup()" tabindex="0">
+                        <div class="btn-icon">🎬</div>
+                        <div class="btn-text">
+                            <span class="btn-title">Create Profile</span>
+                            <span class="btn-subtitle">Make it yours!</span>
+                        </div>
+                    </button>
+                    
+                    <button class="access-btn existing-btn focusable" onclick="showExistingProfiles()" id="existing-profiles-btn" style="display: none;" tabindex="0">
+                        <div class="btn-icon">🏆</div>
+                        <div class="btn-text">
+                            <span class="btn-title">My Profiles</span>
+                            <span class="btn-subtitle">Choose your profile!</span>
+                        </div>
+                    </button>
+                </div>
+                
+                <!-- Personal Note from Rishi -->
+                <div class="rishi-welcome-note">
+                    <div class="note-icon">📌</div>
+                    <div class="note-content">
+                        <div class="note-header">Note from Rishi:</div>
+                        <p>Hey! This app was made just for my little brother to enjoy safe and fun videos. It's a personal project — not for public sharing or app stores. Please keep it private and just enjoy the love behind it.</p>
+                        <div class="made-by">Made with ❤️ by <strong>RishiRohith</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Setup Screen -->
+        <div id="profile-setup" class="screen">
+            <div class="profile-content">
+                <div class="mascot-header">
+                    <div class="mascot-large">🎬</div>
+                    <h2>Create Your Epic Profile!</h2>
+                </div>
+                
+                <div class="profile-form">
+                    <div class="form-group">
+                        <label>✏️ What's your name?</label>
+                        <input type="text" id="profile-name" placeholder="Enter your epic name" maxlength="20">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🎬 Choose your epic emoji:</label>
+                        <div class="emoji-selector">
+                            <div class="emoji-option focusable" data-emoji="😎" tabindex="0">😎</div>
+                            <div class="emoji-option focusable" data-emoji="🥶" tabindex="0">🥶</div>
+                            <div class="emoji-option focusable" data-emoji="🗿" tabindex="0">🗿</div>
+                            <div class="emoji-option focusable" data-emoji="🫠" tabindex="0">🫠</div>
+                            <div class="emoji-option focusable" data-emoji="🦕" tabindex="0">🦕</div>
+                            <div class="emoji-option focusable" data-emoji="💥" tabindex="0">💥</div>
+                            <div class="emoji-option focusable" data-emoji="☁" tabindex="0">☁</div>
+                            <div class="emoji-option focusable" data-emoji="☄️" tabindex="0">☄️</div>
+                            <div class="emoji-option focusable" data-emoji="🐥" tabindex="0">🐥</div>
+                            <div class="emoji-option focusable" data-emoji="🦴" tabindex="0">🦴</div>
+                            <div class="emoji-option focusable" data-emoji="🎂" tabindex="0">🎂</div>
+                            <div class="emoji-option focusable" data-emoji="🍼" tabindex="0">🍼</div>
+                            <div class="emoji-option focusable" data-emoji="🍪" tabindex="0">🍪</div>
+                            <div class="emoji-option focusable" data-emoji="🍫" tabindex="0">🍫</div>
+                            <div class="emoji-option focusable" data-emoji="🍨" tabindex="0">🍨</div>
+                            <div class="emoji-option focusable" data-emoji="🍦" tabindex="0">🍦</div>
+                            <div class="emoji-option focusable" data-emoji="🧊" tabindex="0">🧊</div>
+                            <div class="emoji-option focusable" data-emoji="🏆" tabindex="0">🏆</div>
+                            <div class="emoji-option focusable" data-emoji="🥉" tabindex="0">🥉</div>
+                            <div class="emoji-option focusable" data-emoji="🥇" tabindex="0">🥇</div>
+                            <div class="emoji-option focusable" data-emoji="🥈" tabindex="0">🥈</div>
+                            <div class="emoji-option focusable" data-emoji="🎬" tabindex="0">🎬</div>
+                            <div class="emoji-option focusable" data-emoji="🎹" tabindex="0">🎹</div>
+                            <div class="emoji-option focusable" data-emoji="🎷" tabindex="0">🎷</div>
+                            <div class="emoji-option focusable" data-emoji="🛴" tabindex="0">🛴</div>
+                            <div class="emoji-option focusable" data-emoji="💻" tabindex="0">💻</div>
+                            <div class="emoji-option focusable" data-emoji="💿" tabindex="0">💿</div>
+                            <div class="emoji-option focusable" data-emoji="⌛" tabindex="0">⌛</div>
+                            <div class="emoji-option focusable" data-emoji="🕰" tabindex="0">🕰</div>
+                            <div class="emoji-option focusable" data-emoji="🔮" tabindex="0">🔮</div>
+                            <div class="emoji-option focusable" data-emoji="🎀" tabindex="0">🎀</div>
+                            <div class="emoji-option focusable" data-emoji="❤" tabindex="0">❤</div>
+                            <div class="emoji-option focusable" data-emoji="⚜️" tabindex="0">⚜️</div>
+                            <div class="emoji-option focusable" data-emoji="💲" tabindex="0">💲</div>
+                            <div class="emoji-option focusable" data-emoji="📢" tabindex="0">📢</div>
+                            <div class="emoji-option focusable" data-emoji="💬" tabindex="0">💬</div>
+                            <div class="emoji-option focusable" data-emoji="💭" tabindex="0">💭</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🌈 Pick your favorite color:</label>
+                        <div class="color-selector">
+                            <div class="color-option focusable" data-color="#1E3A8A" style="background: #1E3A8A;" tabindex="0"></div>
+                            <div class="color-option focusable" data-color="#3B82F6" style="background: #3B82F6;" tabindex="0"></div>
+                            <div class="color-option focusable" data-color="#60A5FA" style="background: #60A5FA;" tabindex="0"></div>
+                            <div class="color-option focusable" data-color="#FCD34D" style="background: #FCD34D;" tabindex="0"></div>
+                            <div class="color-option focusable" data-color="#10B981" style="background: #10B981;" tabindex="0"></div>
+                            <div class="color-option focusable" data-color="#000000" style="background: #000000;" tabindex="0"></div>
+                            <div class="color-option focusable" data-color="#1E40AF" style="background: #1E40AF;" tabindex="0"></div>
+                            <div class="color-option focusable" data-color="#059669" style="background: #059669;" tabindex="0"></div>
+                            <div class="color-option focusable" data-color="#F59E0B" style="background: #F59E0B;" tabindex="0"></div>
+                            <div class="color-option focusable" data-color="#2563EB" style="background: #2563EB;" tabindex="0"></div>
+                            <div class="color-option focusable" data-color="#0891B2" style="background: #0891B2;" tabindex="0"></div>
+                            <div class="color-option focusable" data-color="#84CC16" style="background: #84CC16;" tabindex="0"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn secondary focusable" onclick="showWelcome()" tabindex="0">← Back</button>
+                        <button class="btn primary focusable" onclick="createProfile()" tabindex="0">Create Epic Profile! 🎉</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Existing Profiles Screen -->
+        <div id="existing-profiles" class="screen">
+            <div class="profiles-content">
+                <div class="mascot-header">
+                    <div class="mascot-large">🏆</div>
+                    <h2>Choose Your Epic Profile!</h2>
+                </div>
+                <div id="profiles-list" class="profiles-list"></div>
+                <div class="form-actions">
+                    <button class="btn secondary focusable" onclick="showWelcome()" tabindex="0">← Back</button>
+                    <button class="btn primary focusable" onclick="showProfileSetup()" tabindex="0">+ New Profile</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Screen -->
+        <div id="main-app" class="screen">
+            <!-- Top Navigation Bar (YouTube Kids Style) -->
+            <header class="kids-header">
+                <div class="header-left">
+                    <div class="app-logo">
+                        <span class="logo-icon">🎬</span>
+                        <span class="logo-text">Bubblio</span>
+                    </div>
+                </div>
+                
+                <div class="header-center">
+                    <button class="voice-search-btn focusable" onclick="startVoiceSearch()" tabindex="0">
+                        <span class="mic-icon">📢</span>
+                        <span class="voice-text">Say what you want!</span>
+                    </button>
+                </div>
+                
+                <div class="header-right">
+                    <div class="profile-bubble" id="current-profile">
+                        <span class="profile-emoji">😎</span>
+                        <span class="profile-name">Guest</span>
+                    </div>
+                    <button class="parent-lock-btn focusable" onclick="showSettings()" tabindex="0">🔮</button>
+                </div>
+            </header>
+
+            <!-- Category Navigation (YouTube Kids Style) -->
+            <nav class="category-nav">
+                <div class="category-carousel">
+                    <button class="category-pill active focusable" data-category="all" onclick="selectCategory('all')" tabindex="0">
+                        <span class="category-icon">🎬</span>
+                        <span class="category-label">All Videos</span>
+                    </button>
+                    <button class="category-pill focusable" data-category="learning" onclick="selectCategory('learning')" tabindex="0">
+                        <span class="category-icon">💻</span>
+                        <span class="category-label">Learning</span>
+                    </button>
+                    <button class="category-pill focusable" data-category="music" onclick="selectCategory('music')" tabindex="0">
+                        <span class="category-icon">🎹</span>
+                        <span class="category-label">Music</span>
+                    </button>
+                    <button class="category-pill focusable" data-category="shows" onclick="selectCategory('shows')" tabindex="0">
+                        <span class="category-icon">🏆</span>
+                        <span class="category-label">Shows</span>
+                    </button>
+                    <button class="category-pill focusable" data-category="games" onclick="selectCategory('games')" tabindex="0">
+                        <span class="category-icon">💥</span>
+                        <span class="category-label">Epic Fun</span>
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Video Player Section (Hidden by default) -->
+            <div id="video-section" class="video-section" style="display: none;">
+                <div class="video-container">
+                    <div class="video-player-wrapper">
+                        <div id="youtube-player"></div>
+                        <div class="video-overlay">
+                            <div class="small-controls">
+                                <button class="small-control-btn focusable" onclick="previousVideo()" title="Previous" tabindex="0">⏮️</button>
+                                <button class="small-control-btn play-pause-small focusable" onclick="togglePlayPause()" id="play-pause-btn" title="Play/Pause" tabindex="0">⏸️</button>
+                                <button class="small-control-btn focusable" onclick="nextVideo()" title="Next" tabindex="0">⏭️</button>
+                            </div>
+                            <button class="fullscreen-btn focusable" onclick="toggleFullscreen()" title="Fullscreen" tabindex="0">⛶</button>
+                        </div>
+                    </div>
+                    <div class="video-info" id="video-info">
+                        <h3 id="video-title">Select a video to start watching!</h3>
+                        <div class="video-actions">
+                            <button class="action-btn focusable" onclick="likeVideo()" tabindex="0">🥇 Epic</button>
+                            <button class="action-btn focusable" onclick="shareVideo()" tabindex="0">💬 Share</button>
+                            <button class="action-btn focusable" onclick="saveVideo()" tabindex="0">🔮 Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mascot Guide -->
+            <div class="mascot-guide" id="mascot-guide">
+                <div class="mascot-character bounce">🗿</div>
+                <div class="mascot-speech-bubble">
+                    <p id="mascot-message">Yo! Pick an epic video to watch! 🎬</p>
+                </div>
+            </div>
+
+            <!-- Video Grid (YouTube Kids Style) -->
+            <div class="video-grid" id="video-grid">
+                <div class="loading-spinner" id="loading-spinner">
+                    <div class="spinner-mascot">💻</div>
+                    <p>Loading epic videos...</p>
+                    <div class="loading-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="videos-container" id="videos-container"></div>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settings-screen" class="screen">
+            <div class="settings-content">
+                <div class="mascot-header">
+                    <div class="mascot-large">🔮</div>
+                    <h2>Epic Settings</h2>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>🎨 Appearance</h3>
+                    <div class="setting-item">
+                        <label class="toggle-label">
+                            <span class="setting-icon">🌙</span>
+                            <span class="setting-text">Dark Mode</span>
+                            <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🔊 Audio</h3>
+                    <div class="setting-item">
+                        <label class="toggle-label">
+                            <span class="setting-icon">🔊</span>
+                            <span class="setting-text">UI Sounds</span>
+                            <input type="checkbox" id="sound-toggle" checked onchange="toggleSounds()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>⏰ Screen Time</h3>
+                    <div class="setting-item">
+                        <span class="setting-icon">🕰</span>
+                        <div class="setting-content">
+                            <label>Time Limit:</label>
+                            <select id="time-limit-select" onchange="setTimeLimit()">
+                                <option value="0">No Limit</option>
+                                <option value="15">15 minutes</option>
+                                <option value="30">30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60">60 minutes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="time-remaining" id="time-remaining" style="display: none;">
+                        ⏰ Time remaining: <span id="time-left">0</span> minutes
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>📺 Video Playlist</h3>
+                    <div class="setting-item">
+                        <span class="setting-icon">📺</span>
+                        <div class="setting-content">
+                            <label>Choose Playlist:</label>
+                            <select id="playlist-select" onchange="changePlaylist()">
+                                <option value="PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d">Epic Learning Videos</option>
+                                <option value="PLO2NpzUDdem3WVqnpyzHHlu_f8att4bsH">Legendary Adventures</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>👤 Profile</h3>
+                    <div class="setting-buttons">
+                        <button class="setting-btn focusable" onclick="editProfile()" tabindex="0">
+                            <span class="btn-icon">✏️</span>
+                            <span>Edit Profile</span>
+                        </button>
+                        <button class="setting-btn focusable" onclick="switchProfile()" tabindex="0">
+                            <span class="btn-icon">🔄</span>
+                            <span>Switch Profile</span>
+                        </button>
+                        <button class="setting-btn danger focusable" onclick="deleteProfile()" tabindex="0">
+                            <span class="btn-icon">🗑️</span>
+                            <span>Delete Profile</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn primary large focusable" onclick="hideSettings()" tabindex="0">← Back to Videos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Limit Modal -->
+        <div id="time-limit-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-mascot">🕰</div>
+                <h2>Time for a Break!</h2>
+                <p>You've been watching for a while. Time to chill! 😎</p>
+                <div class="break-animation">
+                    <div class="bounce-emoji">🧊</div>
+                    <div class="bounce-emoji">☁</div>
+                    <div class="bounce-emoji">💥</div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn primary focusable" onclick="extendTime()" tabindex="0">5 More Minutes Please! 🙏</button>
+                    <button class="btn secondary focusable" onclick="takeBreak()" tabindex="0">Take a Break 😴</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parent Lock Modal -->
+        <div id="parent-lock-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-mascot">🔮</div>
+                <h2>Parent Verification</h2>
+                <p>Solve this simple math problem:</p>
+                <div id="math-problem" class="math-problem"></div>
+                <input type="number" id="math-answer" placeholder="Your answer">
+                <div class="modal-actions">
+                    <button class="btn secondary focusable" onclick="hideParentLock()" tabindex="0">Cancel</button>
+                    <button class="btn primary focusable" onclick="checkParentAnswer()" tabindex="0">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="click-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmM=" type="audio/wav">
+    </audio>
+
+    <!-- Configuration -->
+    <script src="config.js"></script>
+    
+    <!-- YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="script.js"></script>
 </body>
 </html>
