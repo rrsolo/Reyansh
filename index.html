@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CritterTube - Safe Videos for Kids</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Animated Background -->
@@ -20,6 +20,11 @@
         <div class="emoji-float">🐢</div>
         <div class="emoji-float">🦋</div>
         <div class="emoji-float">🐝</div>
+        <div class="emoji-float">🌟</div>
+        <div class="emoji-float">⭐</div>
+        <div class="emoji-float">🌈</div>
+        <div class="emoji-float">🎈</div>
+        <div class="emoji-float">🎨</div>
     </div>
 
     <!-- Main App Container -->
@@ -28,23 +33,36 @@
         <!-- Welcome Screen -->
         <div id="welcome-screen" class="screen active">
             <div class="welcome-content">
+                <div class="mascot-container">
+                    <div class="mascot-character">🎭</div>
+                    <div class="mascot-bounce">🎪</div>
+                </div>
                 <h1 class="app-title">🎬 CritterTube</h1>
                 <p class="app-subtitle">Safe & Fun Videos for Kids!</p>
                 
                 <div class="access-options">
                     <button class="access-btn guest-btn" onclick="startGuestMode()">
-                        👥 Guest Mode
-                        <span>Start watching right away!</span>
+                        <div class="btn-icon">👥</div>
+                        <div class="btn-text">
+                            <span class="btn-title">Guest Mode</span>
+                            <span class="btn-subtitle">Start watching right away!</span>
+                        </div>
                     </button>
                     
                     <button class="access-btn profile-btn" onclick="showProfileSetup()">
-                        👤 Create Profile
-                        <span>Customize your experience!</span>
+                        <div class="btn-icon">👤</div>
+                        <div class="btn-text">
+                            <span class="btn-title">Create Profile</span>
+                            <span class="btn-subtitle">Customize your experience!</span>
+                        </div>
                     </button>
                     
                     <button class="access-btn existing-btn" onclick="showExistingProfiles()" id="existing-profiles-btn" style="display: none;">
-                        🏠 My Profiles
-                        <span>Choose your saved profile!</span>
+                        <div class="btn-icon">🏠</div>
+                        <div class="btn-text">
+                            <span class="btn-title">My Profiles</span>
+                            <span class="btn-subtitle">Choose your saved profile!</span>
+                        </div>
                     </button>
                 </div>
             </div>
@@ -53,16 +71,19 @@
         <!-- Profile Setup Screen -->
         <div id="profile-setup" class="screen">
             <div class="profile-content">
-                <h2>🎨 Create Your Profile</h2>
+                <div class="mascot-header">
+                    <div class="mascot-large">🎨</div>
+                    <h2>Create Your Profile!</h2>
+                </div>
                 
                 <div class="profile-form">
                     <div class="form-group">
-                        <label>What's your name?</label>
+                        <label>✏️ What's your name?</label>
                         <input type="text" id="profile-name" placeholder="Enter your name" maxlength="20">
                     </div>
                     
                     <div class="form-group">
-                        <label>Choose your animal friend:</label>
+                        <label>🐾 Choose your animal friend:</label>
                         <div class="emoji-selector">
                             <div class="emoji-option" data-emoji="🐶">🐶</div>
                             <div class="emoji-option" data-emoji="🐱">🐱</div>
@@ -72,11 +93,15 @@
                             <div class="emoji-option" data-emoji="🦊">🦊</div>
                             <div class="emoji-option" data-emoji="🐸">🐸</div>
                             <div class="emoji-option" data-emoji="🐢">🐢</div>
+                            <div class="emoji-option" data-emoji="🦁">🦁</div>
+                            <div class="emoji-option" data-emoji="🐯">🐯</div>
+                            <div class="emoji-option" data-emoji="🐨">🐨</div>
+                            <div class="emoji-option" data-emoji="🐮">🐮</div>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label>Pick your favorite color:</label>
+                        <label>🌈 Pick your favorite color:</label>
                         <div class="color-selector">
                             <div class="color-option" data-color="#FF6B6B" style="background: #FF6B6B;"></div>
                             <div class="color-option" data-color="#4ECDC4" style="background: #4ECDC4;"></div>
@@ -86,6 +111,10 @@
                             <div class="color-option" data-color="#DDA0DD" style="background: #DDA0DD;"></div>
                             <div class="color-option" data-color="#98D8C8" style="background: #98D8C8;"></div>
                             <div class="color-option" data-color="#F7DC6F" style="background: #F7DC6F;"></div>
+                            <div class="color-option" data-color="#FFB6C1" style="background: #FFB6C1;"></div>
+                            <div class="color-option" data-color="#87CEEB" style="background: #87CEEB;"></div>
+                            <div class="color-option" data-color="#98FB98" style="background: #98FB98;"></div>
+                            <div class="color-option" data-color="#F0E68C" style="background: #F0E68C;"></div>
                         </div>
                     </div>
                     
@@ -100,7 +129,10 @@
         <!-- Existing Profiles Screen -->
         <div id="existing-profiles" class="screen">
             <div class="profiles-content">
-                <h2>👨‍👩‍👧‍👦 Choose Your Profile</h2>
+                <div class="mascot-header">
+                    <div class="mascot-large">👨‍👩‍👧‍👦</div>
+                    <h2>Choose Your Profile!</h2>
+                </div>
                 <div id="profiles-list" class="profiles-list"></div>
                 <div class="form-actions">
                     <button class="btn secondary" onclick="showWelcome()">← Back</button>
@@ -111,42 +143,100 @@
 
         <!-- Main App Screen -->
         <div id="main-app" class="screen">
-            <!-- Header -->
-            <header class="app-header">
+            <!-- Top Navigation Bar (YouTube Kids Style) -->
+            <header class="kids-header">
                 <div class="header-left">
-                    <h1 class="app-logo">🎬 CritterTube</h1>
+                    <div class="app-logo">
+                        <span class="logo-icon">🎬</span>
+                        <span class="logo-text">CritterTube</span>
+                    </div>
                 </div>
+                
+                <div class="header-center">
+                    <button class="voice-search-btn" onclick="startVoiceSearch()">
+                        <span class="mic-icon">🎤</span>
+                        <span class="voice-text">Say what you want!</span>
+                    </button>
+                </div>
+                
                 <div class="header-right">
-                    <div class="profile-info" id="current-profile">
+                    <div class="profile-bubble" id="current-profile">
                         <span class="profile-emoji">🐶</span>
                         <span class="profile-name">Guest</span>
                     </div>
-                    <button class="btn settings-btn" onclick="showSettings()">⚙️</button>
+                    <button class="parent-lock-btn" onclick="showSettings()">🔒</button>
                 </div>
             </header>
 
-            <!-- Video Player Section -->
+            <!-- Category Navigation (YouTube Kids Style) -->
+            <nav class="category-nav">
+                <div class="category-carousel">
+                    <button class="category-pill active" data-category="all" onclick="selectCategory('all')">
+                        <span class="category-icon">🌟</span>
+                        <span class="category-label">All Videos</span>
+                    </button>
+                    <button class="category-pill" data-category="learning" onclick="selectCategory('learning')">
+                        <span class="category-icon">📚</span>
+                        <span class="category-label">Learning</span>
+                    </button>
+                    <button class="category-pill" data-category="music" onclick="selectCategory('music')">
+                        <span class="category-icon">🎵</span>
+                        <span class="category-label">Music</span>
+                    </button>
+                    <button class="category-pill" data-category="shows" onclick="selectCategory('shows')">
+                        <span class="category-icon">📺</span>
+                        <span class="category-label">Shows</span>
+                    </button>
+                    <button class="category-pill" data-category="games" onclick="selectCategory('games')">
+                        <span class="category-icon">🎮</span>
+                        <span class="category-label">Fun</span>
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Video Player Section (Hidden by default) -->
             <div id="video-section" class="video-section" style="display: none;">
                 <div class="video-container">
-                    <div id="youtube-player"></div>
-                    <div class="video-controls">
-                        <button class="control-btn" onclick="previousVideo()">⏮️ Previous</button>
-                        <button class="control-btn" onclick="togglePlayPause()" id="play-pause-btn">⏸️ Pause</button>
-                        <button class="control-btn" onclick="nextVideo()">⏭️ Next</button>
-                        <button class="control-btn" onclick="toggleFullscreen()">🔲 Fullscreen</button>
+                    <div class="video-player-wrapper">
+                        <div id="youtube-player"></div>
+                        <div class="video-overlay">
+                            <div class="small-controls">
+                                <button class="small-control-btn" onclick="previousVideo()" title="Previous">⏮️</button>
+                                <button class="small-control-btn play-pause-small" onclick="togglePlayPause()" id="play-pause-btn" title="Play/Pause">⏸️</button>
+                                <button class="small-control-btn" onclick="nextVideo()" title="Next">⏭️</button>
+                            </div>
+                            <button class="fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
+                        </div>
                     </div>
                     <div class="video-info" id="video-info">
                         <h3 id="video-title">Select a video to start watching!</h3>
+                        <div class="video-actions">
+                            <button class="action-btn" onclick="likeVideo()">👍 Like</button>
+                            <button class="action-btn" onclick="shareVideo()">📤 Share</button>
+                            <button class="action-btn" onclick="saveVideo()">💾 Save</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Video Grid -->
+            <!-- Mascot Guide -->
+            <div class="mascot-guide" id="mascot-guide">
+                <div class="mascot-character bounce">🦸‍♂️</div>
+                <div class="mascot-speech-bubble">
+                    <p id="mascot-message">Hi there! Pick a video to watch! �</p>
+                </div>
+            </div>
+
+            <!-- Video Grid (YouTube Kids Style) -->
             <div class="video-grid" id="video-grid">
-                <h2 class="section-title">🎥 Fun Videos for You!</h2>
                 <div class="loading-spinner" id="loading-spinner">
-                    <div class="spinner">🎠</div>
+                    <div class="spinner-mascot">🎠</div>
                     <p>Loading awesome videos...</p>
+                    <div class="loading-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
                 <div class="videos-container" id="videos-container"></div>
             </div>
@@ -155,13 +245,17 @@
         <!-- Settings Screen -->
         <div id="settings-screen" class="screen">
             <div class="settings-content">
-                <h2>⚙️ Settings</h2>
+                <div class="mascot-header">
+                    <div class="mascot-large">⚙️</div>
+                    <h2>Settings</h2>
+                </div>
                 
                 <div class="settings-section">
                     <h3>🎨 Appearance</h3>
                     <div class="setting-item">
                         <label class="toggle-label">
-                            Dark Mode
+                            <span class="setting-icon">🌙</span>
+                            <span class="setting-text">Dark Mode</span>
                             <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
                             <span class="toggle-slider"></span>
                         </label>
@@ -172,7 +266,8 @@
                     <h3>🔊 Audio</h3>
                     <div class="setting-item">
                         <label class="toggle-label">
-                            UI Sounds
+                            <span class="setting-icon">🔊</span>
+                            <span class="setting-text">UI Sounds</span>
                             <input type="checkbox" id="sound-toggle" checked onchange="toggleSounds()">
                             <span class="toggle-slider"></span>
                         </label>
@@ -182,48 +277,57 @@
                 <div class="settings-section">
                     <h3>⏰ Screen Time</h3>
                     <div class="setting-item">
-                        <label>Time Limit (minutes):</label>
-                        <select id="time-limit-select" onchange="setTimeLimit()">
-                            <option value="0">No Limit</option>
-                            <option value="15">15 minutes</option>
-                            <option value="30">30 minutes</option>
-                            <option value="45">45 minutes</option>
-                            <option value="60">60 minutes</option>
-                        </select>
+                        <span class="setting-icon">⏱️</span>
+                        <div class="setting-content">
+                            <label>Time Limit:</label>
+                            <select id="time-limit-select" onchange="setTimeLimit()">
+                                <option value="0">No Limit</option>
+                                <option value="15">15 minutes</option>
+                                <option value="30">30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60">60 minutes</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="time-remaining" id="time-remaining" style="display: none;">
-                        Time remaining: <span id="time-left">0</span> minutes
+                        ⏰ Time remaining: <span id="time-left">0</span> minutes
                     </div>
                 </div>
 
                 <div class="settings-section">
                     <h3>📺 Video Playlist</h3>
                     <div class="setting-item">
-                        <label>Choose Playlist:</label>
-                        <select id="playlist-select" onchange="changePlaylist()">
-                            <option value="PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d">Fun Learning Videos</option>
-                            <option value="PLO2NpzUDdem3WVqnpyzHHlu_f8att4bsH">Educational Adventures</option>
-                        </select>
+                        <span class="setting-icon">📋</span>
+                        <div class="setting-content">
+                            <label>Choose Playlist:</label>
+                            <select id="playlist-select" onchange="changePlaylist()">
+                                <option value="PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d">Fun Learning Videos</option>
+                                <option value="PLO2NpzUDdem3WVqnpyzHHlu_f8att4bsH">Educational Adventures</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
                 <div class="settings-section">
                     <h3>👤 Profile</h3>
-                    <div class="setting-item">
-                        <button class="btn secondary" onclick="editProfile()">Edit Profile</button>
-                        <button class="btn secondary" onclick="switchProfile()">Switch Profile</button>
-                        <button class="btn danger" onclick="deleteProfile()">Delete Profile</button>
+                    <div class="setting-buttons">
+                        <button class="setting-btn" onclick="editProfile()">
+                            <span class="btn-icon">✏️</span>
+                            <span>Edit Profile</span>
+                        </button>
+                        <button class="setting-btn" onclick="switchProfile()">
+                            <span class="btn-icon">🔄</span>
+                            <span>Switch Profile</span>
+                        </button>
+                        <button class="setting-btn danger" onclick="deleteProfile()">
+                            <span class="btn-icon">🗑️</span>
+                            <span>Delete Profile</span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="settings-section parent-lock" id="parent-lock">
-                    <h3>🔒 Parent Controls</h3>
-                    <p>Some settings require parent permission</p>
-                    <button class="btn primary" onclick="showParentLock()">Access Parent Controls</button>
-                </div>
-
                 <div class="form-actions">
-                    <button class="btn primary" onclick="hideSettings()">← Back to Videos</button>
+                    <button class="btn primary large" onclick="hideSettings()">← Back to Videos</button>
                 </div>
             </div>
         </div>
@@ -231,26 +335,30 @@
         <!-- Time Limit Modal -->
         <div id="time-limit-modal" class="modal">
             <div class="modal-content">
-                <h2>⏰ Time's Up!</h2>
-                <p>You've been watching for a while. Time for a break! 🌟</p>
+                <div class="modal-mascot">⏰</div>
+                <h2>Time for a Break!</h2>
+                <p>You've been watching for a while. Your eyes need a rest! 🌟</p>
                 <div class="break-animation">
                     <div class="bounce-emoji">🌈</div>
                     <div class="bounce-emoji">⭐</div>
                     <div class="bounce-emoji">🎈</div>
                 </div>
-                <button class="btn primary" onclick="extendTime()">5 More Minutes Please! 🙏</button>
-                <button class="btn secondary" onclick="takeBreak()">Take a Break 😴</button>
+                <div class="modal-actions">
+                    <button class="btn primary" onclick="extendTime()">5 More Minutes Please! 🙏</button>
+                    <button class="btn secondary" onclick="takeBreak()">Take a Break 😴</button>
+                </div>
             </div>
         </div>
 
         <!-- Parent Lock Modal -->
         <div id="parent-lock-modal" class="modal">
             <div class="modal-content">
-                <h2>🔒 Parent Verification</h2>
+                <div class="modal-mascot">🔒</div>
+                <h2>Parent Verification</h2>
                 <p>Solve this simple math problem:</p>
                 <div id="math-problem" class="math-problem"></div>
                 <input type="number" id="math-answer" placeholder="Your answer">
-                <div class="form-actions">
+                <div class="modal-actions">
                     <button class="btn secondary" onclick="hideParentLock()">Cancel</button>
                     <button class="btn primary" onclick="checkParentAnswer()">Submit</button>
                 </div>

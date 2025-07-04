@@ -42,6 +42,135 @@ function initializeApp() {
     
     // Play welcome sound
     playSound('welcome');
+    
+    // Initialize mascot messages
+    initializeMascot();
+}
+
+// Mascot functionality
+function initializeMascot() {
+    const mascotMessages = [
+        "Hi there! Pick a video to watch! 🎬",
+        "Want to learn something new today? 📚",
+        "Music videos are super fun! 🎵",
+        "Let's watch something awesome! ⭐",
+        "Time for some educational fun! 🎓",
+        "What sounds interesting to you? 🤔"
+    ];
+    
+    setInterval(() => {
+        if (currentScreen === 'main-app') {
+            updateMascotMessage(mascotMessages[Math.floor(Math.random() * mascotMessages.length)]);
+        }
+    }, 10000); // Change message every 10 seconds
+}
+
+function updateMascotMessage(message) {
+    const mascotMessage = document.getElementById('mascot-message');
+    if (mascotMessage) {
+        mascotMessage.textContent = message;
+        playSound('mascot');
+    }
+}
+
+// Category selection
+function selectCategory(category) {
+    // Update active category
+    document.querySelectorAll('.category-pill').forEach(pill => {
+        pill.classList.remove('active');
+    });
+    document.querySelector(`[data-category="${category}"]`).classList.add('active');
+    
+    // Filter videos (for now, just reload all - in real app would filter by category)
+    loadVideos();
+    playSound('category-select');
+    
+    // Update mascot message based on category
+    const categoryMessages = {
+        'all': "Great choice! All videos are here! 🌟",
+        'learning': "Time to learn something new! 📚",
+        'music': "Let's dance and sing! 🎵",
+        'shows': "Story time with fun shows! 📺",
+        'games': "Fun and games ahead! 🎮"
+    };
+    
+    updateMascotMessage(categoryMessages[category] || "Let's explore together! 🎭");
+}
+
+// Voice search functionality
+function startVoiceSearch() {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+        
+        recognition.onstart = function() {
+            updateMascotMessage("I'm listening! Tell me what you want to watch! 👂");
+            playSound('voice-start');
+        };
+        
+        recognition.onresult = function(event) {
+            const command = event.results[0][0].transcript.toLowerCase();
+            handleVoiceSearch(command);
+        };
+        
+        recognition.onerror = function(event) {
+            updateMascotMessage("Sorry, I didn't understand. Try again! 😅");
+            playSound('error');
+        };
+        
+        recognition.start();
+    } else {
+        updateMascotMessage("Voice search isn't available on this device! 😔");
+        showInfo("Voice search is not supported in this browser");
+    }
+}
+
+function handleVoiceSearch(command) {
+    updateMascotMessage(`You said: "${command}" - Searching for videos! 🔍`);
+    
+    // Simple keyword matching for categories
+    if (command.includes('learn') || command.includes('education')) {
+        selectCategory('learning');
+    } else if (command.includes('music') || command.includes('song')) {
+        selectCategory('music');
+    } else if (command.includes('show') || command.includes('story')) {
+        selectCategory('shows');
+    } else if (command.includes('game') || command.includes('fun')) {
+        selectCategory('games');
+    } else if (command.includes('play') || command.includes('start')) {
+        if (videos.length > 0) {
+            playVideo(0);
+        }
+    } else {
+        // Default to showing all videos
+        selectCategory('all');
+        updateMascotMessage("Here are all our awesome videos! 🎬");
+    }
+    
+    playSound('voice-success');
+}
+
+// Video action buttons (placeholders for now)
+function likeVideo() {
+    showSuccess("Video liked! 👍");
+    updateMascotMessage("Great choice! I'm glad you liked it! 😊");
+    playSound('like');
+}
+
+function shareVideo() {
+    showSuccess("Video shared with family! 📤");
+    updateMascotMessage("Sharing is caring! Tell your family about it! 👨‍👩‍👧‍👦");
+    playSound('share');
+}
+
+function saveVideo() {
+    showSuccess("Video saved to your favorites! 💾");
+    updateMascotMessage("Saved for later! You can watch it again anytime! ⭐");
+    playSound('save');
 }
 
 function checkExistingProfiles() {
@@ -357,6 +486,9 @@ function playVideo(index) {
     
     // Scroll to video player
     document.getElementById('video-section').scrollIntoView({ behavior: 'smooth' });
+    
+    // Update mascot message
+    updateMascotMessage(`Great choice! Enjoy "${video.snippet.title}"! 🎬`);
     
     playSound('video-select');
 }
@@ -674,7 +806,14 @@ function playSound(type) {
         'video-select': 900,
         'video-start': 1000,
         'video-end': 500,
-        'welcome': [440, 554, 659, 831] // A-C#-E-G# chord
+        'welcome': [440, 554, 659, 831], // A-C#-E-G# chord
+        'mascot': 650,
+        'category-select': 750,
+        'voice-start': [440, 554, 659],
+        'voice-success': [523, 659, 784, 1047],
+        'like': [659, 784, 988],
+        'share': [523, 659],
+        'save': [784, 988, 1175]
     };
     
     const frequency = sounds[type] || 600;
