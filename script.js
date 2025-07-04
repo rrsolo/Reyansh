@@ -415,9 +415,12 @@ function showScreen(screenId) {
     }
 }
 
-// Welcome Screen Functions
+// Welcome Screen Functions - FIXED
 function startGuestMode() {
-    triggerBubbleAnimation(); // Add bubble animation
+    console.log('Starting guest mode...'); // Debug log
+    
+    triggerBubbleAnimation();
+    playSound('success');
     
     currentProfile = {
         name: 'Guest',
@@ -427,19 +430,30 @@ function startGuestMode() {
     };
     updateCurrentProfile();
     
-    // Delay the screen transition to allow bubble animation to play
+    // Show main app after bubble animation
     setTimeout(() => {
+        console.log('Transitioning to main app...'); // Debug log
         showMainApp();
-    }, 800);
+    }, 1200); // Increased delay to ensure animation completes
 }
 
 function showProfileSetup() {
-    showScreen('profile-setup');
+    triggerBubbleAnimation();
+    playSound('success');
+    
+    setTimeout(() => {
+        showScreen('profile-setup');
+    }, 1200);
 }
 
 function showExistingProfiles() {
-    loadExistingProfiles();
-    showScreen('existing-profiles');
+    triggerBubbleAnimation();
+    playSound('success');
+    
+    setTimeout(() => {
+        loadExistingProfiles();
+        showScreen('existing-profiles');
+    }, 1200);
 }
 
 function showWelcome() {
@@ -466,7 +480,7 @@ function createProfile() {
     }
     
     if (!selectedEmoji) {
-        showError('Please choose your animal friend!');
+        showError('Please choose your epic emoji!');
         return;
     }
     
@@ -488,14 +502,14 @@ function createProfile() {
     currentProfile = profile;
     updateCurrentProfile();
     
-    triggerBubbleAnimation(); // Add bubble animation
+    triggerBubbleAnimation();
+    playSound('success');
+    showSuccess('Profile created successfully! 🎉');
     
     // Delay the screen transition to allow bubble animation to play
     setTimeout(() => {
         showMainApp();
-    }, 800);
-    
-    showSuccess('Profile created successfully! 🎉');
+    }, 1200);
 }
 
 function saveProfile(profile) {

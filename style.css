@@ -254,18 +254,58 @@ body.dark-mode {
     75% { transform: translateY(-15px) rotate(5deg); }
 }
 
-.app-title {
+/* Bubblio Logo Styling */
+.bubblio-logo {
     font-family: 'Fredoka One', cursive;
-    font-size: 4.5rem;
+    font-size: 5rem;
     font-weight: 400;
-    margin-bottom: 1rem;
-    background: linear-gradient(45deg, var(--primary-blue), var(--bright-yellow), var(--bright-green), var(--secondary-blue));
+    background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7);
+    background-size: 400% 400%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-    animation: titlePulse 3s ease-in-out infinite;
-    border: var(--black-border);
+    animation: logoGradient 3s ease-in-out infinite, logoBounce 2s ease-in-out infinite;
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+    letter-spacing: 0.1em;
+    position: relative;
+}
+
+.bubblio-logo::before {
+    content: '🫧';
+    position: absolute;
+    left: -60px;
+    top: -10px;
+    font-size: 3rem;
+    animation: bubbleSpin 4s linear infinite;
+}
+
+.bubblio-logo::after {
+    content: '🫧';
+    position: absolute;
+    right: -60px;
+    top: -20px;
+    font-size: 2rem;
+    animation: bubbleSpin 3s linear infinite reverse;
+}
+
+@keyframes logoGradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes logoBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.05); }
+}
+
+@keyframes bubbleSpin {
+    0% { transform: rotate(0deg) translateY(0px); }
+    50% { transform: rotate(180deg) translateY(-20px); }
+    100% { transform: rotate(360deg) translateY(0px); }
+}
+
+.app-title {
+    margin-bottom: 1rem;
     padding: 1rem;
     border-radius: var(--border-radius);
 }
@@ -1444,6 +1484,15 @@ body.dark-mode .modal-content {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .bubblio-logo {
+        font-size: 3rem;
+    }
+    
+    .bubblio-logo::before,
+    .bubblio-logo::after {
+        display: none;
+    }
+    
     .app-title {
         font-size: 2.5rem;
     }
@@ -1501,6 +1550,10 @@ body.dark-mode .modal-content {
 }
 
 @media (max-width: 480px) {
+    .bubblio-logo {
+        font-size: 2.5rem;
+    }
+    
     .screen {
         padding: 1rem;
     }
@@ -1512,6 +1565,11 @@ body.dark-mode .modal-content {
     
     .app-title {
         font-size: 2rem;
+    }
+    
+    .made-with-love {
+        font-size: 1rem;
+        margin-top: 2rem;
     }
     
     .videos-container {
