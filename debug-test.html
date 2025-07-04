@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubblio Debug Test</title>
+    <style>
+        body {
+            font-family: 'Comic Neue', cursive;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+            color: white;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 15px;
+            border: 3px solid black;
+        }
+        .success { color: #10B981; }
+        .error { color: #FD79A8; }
+        .warning { color: #FCD34D; }
+        button {
+            background: #10B981;
+            color: white;
+            border: 3px solid black;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-family: inherit;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        #results {
+            background: black;
+            color: lime;
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🫧 Bubblio Debug Test</h1>
+    <p>This page helps identify issues with your Bubblio deployment.</p>
+
+    <div class="test-section">
+        <h2>📁 File Loading Tests</h2>
+        <div id="file-tests">
+            <p>🔍 Checking if all files are accessible...</p>
+        </div>
+        <button onclick="runFileTests()">Run File Tests</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🔑 API Configuration Tests</h2>
+        <div id="api-tests">
+            <p>🔍 Checking API key and configuration...</p>
+        </div>
+        <button onclick="runAPITests()">Run API Tests</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📺 YouTube API Tests</h2>
+        <div id="youtube-tests">
+            <p>🔍 Testing YouTube Data API v3 connection...</p>
+        </div>
+        <button onclick="runYouTubeTests()">Run YouTube Tests</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🌐 Network & Browser Tests</h2>
+        <div id="network-tests">
+            <p>🔍 Checking browser compatibility and network...</p>
+        </div>
+        <button onclick="runNetworkTests()">Run Network Tests</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Test Results</h2>
+        <div id="results">Click the test buttons above to see results...</div>
+        <button onclick="runAllTests()">🚀 Run All Tests</button>
+        <button onclick="clearResults()">🧹 Clear Results</button>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️';
+            results.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+            results.scrollTop = results.scrollHeight;
+        }
+
+        function clearResults() {
+            document.getElementById('results').textContent = '';
+        }
+
+        async function runFileTests() {
+            log('🔍 Starting file accessibility tests...');
+            
+            const files = ['index.html', 'style.css', 'script.js', 'config.js'];
+            
+            for (const file of files) {
+                try {
+                    const response = await fetch(file, { method: 'HEAD' });
+                    if (response.ok) {
+                        log(`${file} - Accessible`, 'success');
+                    } else {
+                        log(`${file} - HTTP ${response.status}`, 'error');
+                    }
+                } catch (error) {
+                    log(`${file} - Failed to load: ${error.message}`, 'error');
+                }
+            }
+            
+            document.getElementById('file-tests').innerHTML = '<p class="success">✅ File tests completed. Check results below.</p>';
+        }
+
+        function runAPITests() {
+            log('🔍 Starting API configuration tests...');
+            
+            // Check if CONFIG is loaded
+            if (typeof CONFIG === 'undefined') {
+                log('CONFIG object not found', 'error');
+                document.getElementById('api-tests').innerHTML = '<p class="error">❌ CONFIG not loaded</p>';
+                return;
+            } else {
+                log('CONFIG object loaded successfully', 'success');
+            }
+            
+            // Check API key
+            const apiKey = CONFIG.YOUTUBE_API_KEY;
+            if (!apiKey || apiKey === 'YOUR_API_KEY_HERE') {
+                log('YouTube API key not configured', 'error');
+            } else {
+                log('YouTube API key present: ' + apiKey.substring(0, 10) + '...', 'success');
+            }
+            
+            // Check playlists
+            if (CONFIG.PLAYLISTS && Object.keys(CONFIG.PLAYLISTS).length > 0) {
+                log(`${Object.keys(CONFIG.PLAYLISTS).length} playlists configured`, 'success');
+                Object.entries(CONFIG.PLAYLISTS).forEach(([id, name]) => {
+                    log(`Playlist: ${name} (${id})`, 'info');
+                });
+            } else {
+                log('No playlists configured', 'warning');
+            }
+            
+            document.getElementById('api-tests').innerHTML = '<p class="success">✅ API tests completed. Check results below.</p>';
+        }
+
+        async function runYouTubeTests() {
+            log('🔍 Starting YouTube API tests...');
+            
+            if (typeof CONFIG === 'undefined' || !CONFIG.YOUTUBE_API_KEY) {
+                log('Cannot test YouTube API - no API key', 'error');
+                return;
+            }
+            
+            const apiKey = CONFIG.YOUTUBE_API_KEY;
+            const testPlaylist = Object.keys(CONFIG.PLAYLISTS)[0];
+            
+            if (!testPlaylist) {
+                log('No playlists to test', 'warning');
+                return;
+            }
+            
+            try {
+                log(`Testing playlist: ${testPlaylist}`);
+                const apiUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=5&playlistId=${testPlaylist}&key=${apiKey}`;
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log(`YouTube API responded successfully`, 'success');
+                    log(`Found ${data.items ? data.items.length : 0} videos`, 'success');
+                    if (data.pageInfo) {
+                        log(`Total videos in playlist: ${data.pageInfo.totalResults}`, 'info');
+                    }
+                } else {
+                    log(`YouTube API error: HTTP ${response.status}`, 'error');
+                    if (data.error) {
+                        log(`Error details: ${data.error.message}`, 'error');
+                    }
+                }
+            } catch (error) {
+                log(`YouTube API test failed: ${error.message}`, 'error');
+            }
+            
+            document.getElementById('youtube-tests').innerHTML = '<p class="success">✅ YouTube tests completed. Check results below.</p>';
+        }
+
+        function runNetworkTests() {
+            log('🔍 Starting network and browser tests...');
+            
+            // Check online status
+            if (navigator.onLine) {
+                log('Browser reports online status', 'success');
+            } else {
+                log('Browser reports offline status', 'warning');
+            }
+            
+            // Check user agent
+            log(`User Agent: ${navigator.userAgent}`, 'info');
+            
+            // Check current URL
+            log(`Current URL: ${window.location.href}`, 'info');
+            
+            // Check if HTTPS
+            if (window.location.protocol === 'https:') {
+                log('Site is served over HTTPS', 'success');
+            } else {
+                log('Site is served over HTTP (some features may not work)', 'warning');
+            }
+            
+            // Check localStorage
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                log('localStorage is available', 'success');
+            } catch (error) {
+                log('localStorage not available', 'error');
+            }
+            
+            // Check fetch API
+            if (typeof fetch !== 'undefined') {
+                log('Fetch API is available', 'success');
+            } else {
+                log('Fetch API not available', 'error');
+            }
+            
+            // Check console for errors
+            const originalError = console.error;
+            let errorCount = 0;
+            console.error = function(...args) {
+                errorCount++;
+                originalError.apply(console, args);
+            };
+            
+            setTimeout(() => {
+                console.error = originalError;
+                if (errorCount === 0) {
+                    log('No console errors detected', 'success');
+                } else {
+                    log(`${errorCount} console errors detected`, 'warning');
+                }
+            }, 1000);
+            
+            document.getElementById('network-tests').innerHTML = '<p class="success">✅ Network tests completed. Check results below.</p>';
+        }
+
+        async function runAllTests() {
+            log('🚀 Running complete diagnostic test suite...');
+            clearResults();
+            
+            await runFileTests();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            runAPITests();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await runYouTubeTests();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            runNetworkTests();
+            
+            log('🎉 All tests completed!', 'success');
+        }
+
+        // Auto-run basic tests on page load
+        window.addEventListener('load', () => {
+            log('🫧 Bubblio Debug Test started');
+            log('Page loaded successfully', 'success');
+        });
+    </script>
+</body>
+</html>

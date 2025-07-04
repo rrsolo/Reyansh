@@ -22,29 +22,65 @@ let currentScreen = 'welcome-screen';
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
+    console.log('🫧 Bubblio starting up...'); // Debug log
+    
+    // Check dependencies
+    if (typeof CONFIG === 'undefined') {
+        console.error('❌ CONFIG not loaded - config.js missing?');
+        showCriticalError('Configuration file not loaded. Please check if all files are uploaded correctly.');
+        return;
+    }
+    
+    console.log('✅ CONFIG loaded successfully');
+    console.log('✅ API Key:', YOUTUBE_API_KEY ? 'Present' : 'Missing');
+    
+    try {
+        initializeApp();
+        console.log('✅ Bubblio initialized successfully!');
+    } catch (error) {
+        console.error('❌ Error initializing Bubblio:', error);
+        showCriticalError('App failed to initialize: ' + error.message);
+    }
 });
 
 function initializeApp() {
-    // Check for existing profiles
-    checkExistingProfiles();
-    
-    // Initialize event listeners
-    initializeEventListeners();
-    
-    // Load settings
-    loadSettings();
-    
-    // Initialize YouTube API
-    if (typeof YT !== 'undefined' && YT.Player) {
-        onYouTubeIframeAPIReady();
+    try {
+        console.log('🔧 Setting up Bubblio components...');
+        
+        // Check for existing profiles
+        checkExistingProfiles();
+        
+        // Initialize event listeners
+        initializeEventListeners();
+        
+        // Load settings
+        loadSettings();
+        
+        // Initialize YouTube API (will be called when API loads)
+        console.log('📺 YouTube API setup ready');
+        
+        // Play welcome sound
+        playSound('welcome');
+        
+        // Initialize mascot messages
+        initializeMascot();
+        
+        // Initialize voice control after a delay
+        setTimeout(() => {
+            try {
+                initializeVoiceControl();
+            } catch (error) {
+                console.log('Voice control not available:', error.message);
+            }
+        }, 2000);
+        
+        console.log('🎉 All components initialized!');
+        
+    } catch (error) {
+        console.error('❌ Error in initializeApp:', error);
+        showCriticalError('Failed to set up app components: ' + error.message);
+        throw error;
     }
-    
-    // Play welcome sound
-    playSound('welcome');
-    
-    // Initialize mascot messages
-    initializeMascot();
 }
 
 // Bubble Animation Function
@@ -692,20 +728,67 @@ function onPlayerStateChange(event) {
 }
 
 function onPlayerError(event) {
-    console.error('YouTube Player Error:', event.data);
-    showError('Video failed to load. Trying next video...');
-    setTimeout(nextVideo, 3000);
+    console.error('🎬 YouTube Player Error:', event.data);
+    
+    let errorMessage = 'Video failed to load';
+    
+    // YouTube error codes
+    switch(event.data) {
+        case 2:
+            errorMessage = 'Invalid video ID';
+            break;
+        case 5:
+            errorMessage = 'Video cannot be played in HTML5 player';
+            break;
+        case 100:
+            errorMessage = 'Video not found or private';
+            break;
+        case 101:
+        case 150:
+            errorMessage = 'Video owner restricted embedding';
+            break;
+    }
+    
+    console.error('Video error details:', errorMessage);
+    showError(`${errorMessage}. Trying next video...`);
+    updateMascotMessage('Oops! That video had an issue. Loading the next epic one! 🎬');
+    
+    // Auto-skip to next video after error
+    setTimeout(() => {
+        if (videos.length > 1) {
+            nextVideo();
+        } else {
+            updateMascotMessage('Having trouble with videos. Try refreshing the page! 🔄');
+        }
+    }, 3000);
 }
 
 // Video Functions
 async function loadVideos() {
-    console.log('Loading videos for playlist:', currentPlaylist); // Debug log
+    console.log('📺 Loading videos for playlist:', currentPlaylist);
     showLoading(true);
+    
+    // Check API key
+    if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'YOUR_API_KEY_HERE') {
+        console.error('❌ YouTube API key not configured');
+        showLoading(false);
+        showCriticalError('YouTube API key not configured. Please check the configuration and refresh the page.');
+        return;
+    }
+    
+    // Check internet connection
+    if (!navigator.onLine) {
+        console.error('❌ No internet connection');
+        showLoading(false);
+        showError('No internet connection. Please check your connection and try again.');
+        updateMascotMessage('Looks like you\'re offline! Connect to the internet and refresh! 📶');
+        return;
+    }
     
     try {
         // Construct YouTube Data API v3 URL
         const apiUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${currentPlaylist}&key=${YOUTUBE_API_KEY}`;
-        console.log('API URL:', apiUrl); // Debug log
+        console.log('🔗 API URL constructed:', apiUrl.replace(YOUTUBE_API_KEY, '***API_KEY***'));
         
         const response = await fetch(apiUrl, {
             method: 'GET',
@@ -745,13 +828,100 @@ async function loadVideos() {
         updateMascotMessage(`Found ${videos.length} epic videos! Pick one to start! 🎬`);
         
     } catch (error) {
-        console.error('Error loading videos:', error);
-        showError(`Failed to load videos: ${error.message}`);
+        console.error('❌ Error loading videos:', error);
         showLoading(false);
         
-        // Show fallback message
-        updateMascotMessage('Oops! Having trouble loading videos. Check your internet connection! 📶');
+        // Detailed error handling
+        let errorMessage = 'Failed to load videos';
+        let userMessage = 'Having trouble loading videos';
+        
+        if (error.message.includes('HTTP error! status: 403')) {
+            errorMessage = 'YouTube API quota exceeded or key invalid';
+            userMessage = 'API quota exceeded. Please try again later! ⏰';
+        } else if (error.message.includes('HTTP error! status: 400')) {
+            errorMessage = 'Invalid playlist ID or API request';
+            userMessage = 'Playlist not found. Check the playlist settings! 📋';
+        } else if (error.message.includes('NetworkError') || error.message.includes('fetch')) {
+            errorMessage = 'Network connection error';
+            userMessage = 'Check your internet connection! 📶';
+        } else if (error.message.includes('No valid videos')) {
+            errorMessage = 'Playlist is empty or all videos are private';
+            userMessage = 'No videos available in this playlist. Try another one! 🎬';
+        } else if (error.message.includes('YouTube API Error')) {
+            errorMessage = error.message;
+            userMessage = 'YouTube API error. Please refresh the page! 🔄';
+        }
+        
+        console.error('Detailed error:', errorMessage);
+        showError(errorMessage);
+        updateMascotMessage(`Oops! ${userMessage}`);
+        
+        // Show error overlay for critical errors
+        if (error.message.includes('403') || error.message.includes('400')) {
+            showCriticalError(`${errorMessage}. Please check the API key and playlist configuration, then refresh the page.`);
+        } else {
+            // Show fallback content for other errors
+            showFallbackContent();
+        }
     }
+}
+
+function showFallbackContent() {
+    console.log('📋 Showing fallback content due to API failure');
+    
+    const container = document.getElementById('videos-container');
+    container.innerHTML = `
+        <div class="fallback-content" style="
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(135deg, var(--bright-yellow), var(--bright-green));
+            border: var(--black-border);
+            border-radius: var(--border-radius);
+            margin: 2rem;
+        ">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">😞</div>
+            <h2 style="color: black; font-family: 'Fredoka One', cursive; margin-bottom: 1rem;">Videos Currently Unavailable</h2>
+            <p style="color: black; font-family: 'Comic Neue', cursive; font-size: 1.1rem; line-height: 1.5; margin-bottom: 2rem;">
+                We're having trouble loading videos right now. This could be due to:
+            </p>
+            <ul style="color: black; text-align: left; max-width: 400px; margin: 0 auto 2rem auto; font-family: 'Comic Neue', cursive;">
+                <li>🌐 Internet connection issues</li>
+                <li>⚡ YouTube API quota limits</li>
+                <li>🔧 Temporary server problems</li>
+                <li>🔑 API configuration issues</li>
+            </ul>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button onclick="loadVideos()" style="
+                    background: var(--bright-blue);
+                    color: white;
+                    border: var(--black-border);
+                    padding: 0.8rem 1.5rem;
+                    border-radius: 15px;
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    box-shadow: var(--shadow);
+                ">🔄 Try Again</button>
+                <button onclick="location.reload()" style="
+                    background: var(--emerald-green);
+                    color: white;
+                    border: var(--black-border);
+                    padding: 0.8rem 1.5rem;
+                    border-radius: 15px;
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    box-shadow: var(--shadow);
+                ">🏠 Refresh Page</button>
+            </div>
+            <p style="color: black; font-family: 'Comic Neue', cursive; font-size: 0.9rem; margin-top: 2rem; font-style: italic;">
+                📞 If this keeps happening, check your internet connection and try refreshing the page.
+            </p>
+        </div>
+    `;
+    
+    updateMascotMessage('Hmm, videos are taking a break! Try refreshing or check your connection! 🔄');
 }
 
 function displayVideos() {
@@ -1270,6 +1440,76 @@ function showNotification(message, type) {
     playSound(type === 'success' ? 'success' : type === 'error' ? 'error' : 'toggle');
 }
 
+function showCriticalError(message) {
+    console.error('🚨 CRITICAL ERROR:', message);
+    
+    // Remove loading spinner if present
+    const spinner = document.getElementById('loading-spinner');
+    if (spinner) spinner.style.display = 'none';
+    
+    // Create error overlay
+    const existingOverlay = document.querySelector('.critical-error-overlay');
+    if (existingOverlay) existingOverlay.remove();
+    
+    const errorOverlay = document.createElement('div');
+    errorOverlay.className = 'critical-error-overlay';
+    errorOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        font-family: 'Comic Neue', cursive;
+    `;
+    
+    errorOverlay.innerHTML = `
+        <div style="
+            background: linear-gradient(135deg, #FD79A8, #FDCB6E);
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 500px;
+            text-align: center;
+            border: 4px solid black;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        ">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">😞</div>
+            <h2 style="color: black; font-family: 'Fredoka One', cursive; margin-bottom: 1rem;">Oops! Something went wrong</h2>
+            <p style="color: black; font-size: 1.1rem; line-height: 1.5; margin-bottom: 2rem;">${message}</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button onclick="location.reload()" style="
+                    background: #00B894;
+                    color: white;
+                    border: 3px solid black;
+                    padding: 0.8rem 1.5rem;
+                    border-radius: 15px;
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                ">🔄 Refresh Page</button>
+                <button onclick="console.log('Debug info:', {userAgent: navigator.userAgent, url: window.location.href, error: '${message}'}); alert('Check browser console (F12) for debug info')" style="
+                    background: #0984E3;
+                    color: white;
+                    border: 3px solid black;
+                    padding: 0.8rem 1.5rem;
+                    border-radius: 15px;
+                    font-family: 'Fredoka One', cursive;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                ">🔧 Debug Info</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(errorOverlay);
+}
+
 // Enhanced Keyboard Navigation for TV Remote and Mobile
 function handleKeyboardNavigation(event) {
     const key = event.key;
@@ -1666,13 +1906,27 @@ window.addEventListener('beforeunload', function() {
 });
 
 window.addEventListener('error', function(event) {
-    console.error('Global error:', event.error);
-    showError('Something went wrong. Please refresh the page.');
+    console.error('🚨 Global JavaScript error:', event.error);
+    console.error('Error details:', {
+        message: event.message,
+        filename: event.filename,
+        line: event.lineno,
+        column: event.colno
+    });
+    
+    // Show user-friendly error
+    if (event.error && event.error.message) {
+        showCriticalError(`JavaScript Error: ${event.error.message}. Please refresh the page or check if all files loaded correctly.`);
+    } else {
+        showCriticalError('Something went wrong. Please refresh the page.');
+    }
 });
 
-// Initialize voice control when player is ready
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(initializeVoiceControl, 2000);
+// Handle unhandled promise rejections
+window.addEventListener('unhandledrejection', function(event) {
+    console.error('🚨 Unhandled promise rejection:', event.reason);
+    showError('A network or API error occurred. Please check your internet connection and refresh.');
+    event.preventDefault(); // Prevent the default console error
 });
 
-console.log('🎬 Bubblio loaded successfully! Welcome to safe video fun! 🐶🐱🐼');
+console.log('🎬 Bubblio loaded successfully! Welcome to safe video fun! 🫧');

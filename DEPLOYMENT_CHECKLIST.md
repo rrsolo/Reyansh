@@ -25,8 +25,9 @@
 bubblio/
 ├── index.html          # ✅ Main app with personal note and fixed navigation
 ├── style.css           # ✅ Complete responsive styling with Bubblio branding
-├── script.js           # ✅ Fixed navigation + YouTube API integration
+├── script.js           # ✅ Fixed navigation + enhanced error handling
 ├── config.js           # ✅ Easy API key and settings management
+├── debug-test.html     # ✅ Diagnostic tool for troubleshooting issues
 ├── README.md           # ✅ Comprehensive deployment guide
 └── DEPLOYMENT_CHECKLIST.md  # ✅ This file
 ```
@@ -52,6 +53,12 @@ YOUTUBE_API_KEY: 'AIzaSyDlsqMzQBOW8rliC2BdpyBOV3Hs8_2bVDA'
 - ✅ Videos load from YouTube API
 - ✅ All device types supported (mobile, TV, desktop)
 - ✅ Bubble animations work on profile selection
+
+### 4. 🔧 Debug Issues (if needed)
+- Access `debug-test.html` on your GitHub Pages site
+- Run diagnostic tests to identify specific problems
+- Check browser console (F12) for detailed error messages
+- Verify API quotas and network connectivity
 
 ## 🎯 Key Features Working
 

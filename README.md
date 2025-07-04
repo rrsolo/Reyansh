@@ -104,17 +104,21 @@ bubblio/
 ├── index.html          # Main HTML structure
 ├── style.css           # Complete styling and responsive design
 ├── script.js           # All functionality and API integration
+├── config.js           # API key and settings configuration
+├── debug-test.html     # Diagnostic tool for troubleshooting
 ├── README.md           # This file
+├── DEPLOYMENT_CHECKLIST.md  # Quick deployment reference
 └── assets/             # (Optional) Additional assets
 ```
 
 ## 🔧 Troubleshooting
 
 ### Videos Not Loading?
-1. **Check API Key**: Ensure it's correctly set in `script.js`
-2. **Check Quotas**: YouTube API has daily limits
-3. **Check CORS**: Ensure referrer restrictions allow your domain
-4. **Check Console**: Open browser dev tools for error messages
+1. **Use Debug Tool**: Visit `yourdomain.github.io/bubblio/debug-test.html` for automated diagnostics
+2. **Check Console**: Open browser dev tools (F12) for detailed error messages
+3. **Check API Key**: Ensure it's correctly configured in `config.js`
+4. **Check Quotas**: YouTube API has daily limits (10,000 units/day)
+5. **Check Network**: Ensure stable internet connection
 
 ### Navigation Issues?
 1. **Clear Cache**: Hard refresh (Ctrl+F5)
