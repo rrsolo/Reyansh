@@ -50,12 +50,15 @@ function initializeApp() {
 // Mascot functionality
 function initializeMascot() {
     const mascotMessages = [
-        "Hi there! Pick a video to watch! 🎬",
-        "Want to learn something new today? 📚",
-        "Music videos are super fun! 🎵",
-        "Let's watch something awesome! ⭐",
-        "Time for some educational fun! 🎓",
-        "What sounds interesting to you? 🤔"
+        "Yo! Pick an epic video to watch! 🎬",
+        "Ready to learn something cool? �",
+        "Time for some epic music! �",
+        "Let's watch something legendary! 🏆",
+        "Check out these awesome videos! 😎",
+        "What's your vibe today? 🔮",
+        "These videos are straight fire! 💥",
+        "Chill time with cool videos! 🧊",
+        "Level up with epic content! �"
     ];
     
     setInterval(() => {
@@ -87,14 +90,14 @@ function selectCategory(category) {
     
     // Update mascot message based on category
     const categoryMessages = {
-        'all': "Great choice! All videos are here! 🌟",
-        'learning': "Time to learn something new! 📚",
-        'music': "Let's dance and sing! 🎵",
-        'shows': "Story time with fun shows! 📺",
-        'games': "Fun and games ahead! 🎮"
+        'all': "Epic! All the best videos are here! �",
+        'learning': "Time to level up your brain! �",
+        'music': "Let's vibe to some epic beats! �",
+        'shows': "Legendary shows coming up! 🏆",
+        'games': "Epic fun time ahead! 💥"
     };
     
-    updateMascotMessage(categoryMessages[category] || "Let's explore together! 🎭");
+    updateMascotMessage(categoryMessages[category] || "Let's find something cool! 🗿");
 }
 
 // Voice search functionality
@@ -108,7 +111,7 @@ function startVoiceSearch() {
         recognition.lang = 'en-US';
         
         recognition.onstart = function() {
-            updateMascotMessage("I'm listening! Tell me what you want to watch! 👂");
+            updateMascotMessage("I'm listening! What epic video do you want? �");
             playSound('voice-start');
         };
         
@@ -118,7 +121,7 @@ function startVoiceSearch() {
         };
         
         recognition.onerror = function(event) {
-            updateMascotMessage("Sorry, I didn't understand. Try again! 😅");
+            updateMascotMessage("Hmm, didn't catch that. Try again! 🤔");
             playSound('error');
         };
         
@@ -130,7 +133,7 @@ function startVoiceSearch() {
 }
 
 function handleVoiceSearch(command) {
-    updateMascotMessage(`You said: "${command}" - Searching for videos! 🔍`);
+    updateMascotMessage(`You said: "${command}" - Finding epic videos! �`);
     
     // Simple keyword matching for categories
     if (command.includes('learn') || command.includes('education')) {
@@ -148,7 +151,7 @@ function handleVoiceSearch(command) {
     } else {
         // Default to showing all videos
         selectCategory('all');
-        updateMascotMessage("Here are all our awesome videos! 🎬");
+        updateMascotMessage("Here are all our epic videos! 🎬");
     }
     
     playSound('voice-success');
@@ -156,20 +159,20 @@ function handleVoiceSearch(command) {
 
 // Video action buttons (placeholders for now)
 function likeVideo() {
-    showSuccess("Video liked! 👍");
-    updateMascotMessage("Great choice! I'm glad you liked it! 😊");
+    showSuccess("That's epic! 🥇");
+    updateMascotMessage("Legendary choice! This video is fire! �");
     playSound('like');
 }
 
 function shareVideo() {
-    showSuccess("Video shared with family! 📤");
-    updateMascotMessage("Sharing is caring! Tell your family about it! 👨‍👩‍👧‍👦");
+    showSuccess("Shared that epic video! �");
+    updateMascotMessage("Spread the epic vibes! Your friends will love it! �");
     playSound('share');
 }
 
 function saveVideo() {
-    showSuccess("Video saved to your favorites! 💾");
-    updateMascotMessage("Saved for later! You can watch it again anytime! ⭐");
+    showSuccess("Video saved for later! �");
+    updateMascotMessage("Cool! You can watch this epic content anytime! 🏆");
     playSound('save');
 }
 
@@ -235,8 +238,8 @@ function showScreen(screenId) {
 function startGuestMode() {
     currentProfile = {
         name: 'Guest',
-        emoji: '🐶',
-        color: '#FF6B6B',
+        emoji: '�',
+        color: '#3B82F6',
         isGuest: true
     };
     updateCurrentProfile();
@@ -488,7 +491,7 @@ function playVideo(index) {
     document.getElementById('video-section').scrollIntoView({ behavior: 'smooth' });
     
     // Update mascot message
-    updateMascotMessage(`Great choice! Enjoy "${video.snippet.title}"! 🎬`);
+    updateMascotMessage(`Epic pick! Enjoy "${video.snippet.title}"! 🎬`);
     
     playSound('video-select');
 }

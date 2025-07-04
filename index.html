@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CritterTube - Safe Videos for Kids</title>
+    <title>CritterTube - Cool Videos for Epic Kids</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Animated Background -->
     <div class="animated-background">
-        <div class="emoji-float">🐶</div>
-        <div class="emoji-float">🐱</div>
-        <div class="emoji-float">🐼</div>
-        <div class="emoji-float">🐵</div>
-        <div class="emoji-float">🐰</div>
-        <div class="emoji-float">🦊</div>
-        <div class="emoji-float">🐸</div>
-        <div class="emoji-float">🐢</div>
-        <div class="emoji-float">🦋</div>
-        <div class="emoji-float">🐝</div>
-        <div class="emoji-float">🌟</div>
-        <div class="emoji-float">⭐</div>
-        <div class="emoji-float">🌈</div>
-        <div class="emoji-float">🎈</div>
-        <div class="emoji-float">🎨</div>
+        <div class="emoji-float">😎</div>
+        <div class="emoji-float">🥶</div>
+        <div class="emoji-float">🗿</div>
+        <div class="emoji-float">🫠</div>
+        <div class="emoji-float">🦕</div>
+        <div class="emoji-float">💥</div>
+        <div class="emoji-float">☁</div>
+        <div class="emoji-float">☄️</div>
+        <div class="emoji-float">🐥</div>
+        <div class="emoji-float">🦴</div>
+        <div class="emoji-float">🎂</div>
+        <div class="emoji-float">🍼</div>
+        <div class="emoji-float">🍪</div>
+        <div class="emoji-float">🧊</div>
+        <div class="emoji-float">🏆</div>
     </div>
 
     <!-- Main App Container -->
@@ -34,34 +34,35 @@
         <div id="welcome-screen" class="screen active">
             <div class="welcome-content">
                 <div class="mascot-container">
-                    <div class="mascot-character">🎭</div>
-                    <div class="mascot-bounce">🎪</div>
+                    <div class="mascot-character">😎</div>
+                    <div class="mascot-bounce">🎬</div>
+                    <div class="mascot-character">🗿</div>
                 </div>
                 <h1 class="app-title">🎬 CritterTube</h1>
-                <p class="app-subtitle">Safe & Fun Videos for Kids!</p>
+                <p class="app-subtitle">Cool Videos for Epic Kids! 😎</p>
                 
                 <div class="access-options">
                     <button class="access-btn guest-btn" onclick="startGuestMode()">
-                        <div class="btn-icon">👥</div>
+                        <div class="btn-icon">😎</div>
                         <div class="btn-text">
                             <span class="btn-title">Guest Mode</span>
-                            <span class="btn-subtitle">Start watching right away!</span>
+                            <span class="btn-subtitle">Jump in and start watching!</span>
                         </div>
                     </button>
                     
                     <button class="access-btn profile-btn" onclick="showProfileSetup()">
-                        <div class="btn-icon">👤</div>
+                        <div class="btn-icon">🎬</div>
                         <div class="btn-text">
                             <span class="btn-title">Create Profile</span>
-                            <span class="btn-subtitle">Customize your experience!</span>
+                            <span class="btn-subtitle">Make it yours!</span>
                         </div>
                     </button>
                     
                     <button class="access-btn existing-btn" onclick="showExistingProfiles()" id="existing-profiles-btn" style="display: none;">
-                        <div class="btn-icon">🏠</div>
+                        <div class="btn-icon">🏆</div>
                         <div class="btn-text">
                             <span class="btn-title">My Profiles</span>
-                            <span class="btn-subtitle">Choose your saved profile!</span>
+                            <span class="btn-subtitle">Choose your profile!</span>
                         </div>
                     </button>
                 </div>
@@ -72,55 +73,80 @@
         <div id="profile-setup" class="screen">
             <div class="profile-content">
                 <div class="mascot-header">
-                    <div class="mascot-large">🎨</div>
-                    <h2>Create Your Profile!</h2>
+                    <div class="mascot-large">🎬</div>
+                    <h2>Create Your Epic Profile!</h2>
                 </div>
                 
                 <div class="profile-form">
                     <div class="form-group">
                         <label>✏️ What's your name?</label>
-                        <input type="text" id="profile-name" placeholder="Enter your name" maxlength="20">
+                        <input type="text" id="profile-name" placeholder="Enter your epic name" maxlength="20">
                     </div>
                     
                     <div class="form-group">
-                        <label>🐾 Choose your animal friend:</label>
+                        <label>🎬 Choose your epic emoji:</label>
                         <div class="emoji-selector">
-                            <div class="emoji-option" data-emoji="🐶">🐶</div>
-                            <div class="emoji-option" data-emoji="🐱">🐱</div>
-                            <div class="emoji-option" data-emoji="🐼">🐼</div>
-                            <div class="emoji-option" data-emoji="🐵">🐵</div>
-                            <div class="emoji-option" data-emoji="🐰">🐰</div>
-                            <div class="emoji-option" data-emoji="🦊">🦊</div>
-                            <div class="emoji-option" data-emoji="🐸">🐸</div>
-                            <div class="emoji-option" data-emoji="🐢">🐢</div>
-                            <div class="emoji-option" data-emoji="🦁">🦁</div>
-                            <div class="emoji-option" data-emoji="🐯">🐯</div>
-                            <div class="emoji-option" data-emoji="🐨">🐨</div>
-                            <div class="emoji-option" data-emoji="🐮">🐮</div>
+                            <div class="emoji-option" data-emoji="😎">😎</div>
+                            <div class="emoji-option" data-emoji="🥶">🥶</div>
+                            <div class="emoji-option" data-emoji="🗿">🗿</div>
+                            <div class="emoji-option" data-emoji="🫠">🫠</div>
+                            <div class="emoji-option" data-emoji="🦕">🦕</div>
+                            <div class="emoji-option" data-emoji="💥">💥</div>
+                            <div class="emoji-option" data-emoji="☁">☁</div>
+                            <div class="emoji-option" data-emoji="☄️">☄️</div>
+                            <div class="emoji-option" data-emoji="🐥">🐥</div>
+                            <div class="emoji-option" data-emoji="🦴">🦴</div>
+                            <div class="emoji-option" data-emoji="🎂">🎂</div>
+                            <div class="emoji-option" data-emoji="🍼">🍼</div>
+                            <div class="emoji-option" data-emoji="🍪">🍪</div>
+                            <div class="emoji-option" data-emoji="🍫">🍫</div>
+                            <div class="emoji-option" data-emoji="🍨">🍨</div>
+                            <div class="emoji-option" data-emoji="🍦">🍦</div>
+                            <div class="emoji-option" data-emoji="🧊">🧊</div>
+                            <div class="emoji-option" data-emoji="🏆">🏆</div>
+                            <div class="emoji-option" data-emoji="🥉">🥉</div>
+                            <div class="emoji-option" data-emoji="🥇">🥇</div>
+                            <div class="emoji-option" data-emoji="🥈">🥈</div>
+                            <div class="emoji-option" data-emoji="🎬">🎬</div>
+                            <div class="emoji-option" data-emoji="🎹">🎹</div>
+                            <div class="emoji-option" data-emoji="🎷">🎷</div>
+                            <div class="emoji-option" data-emoji="🛴">🛴</div>
+                            <div class="emoji-option" data-emoji="💻">💻</div>
+                            <div class="emoji-option" data-emoji="💿">💿</div>
+                            <div class="emoji-option" data-emoji="⌛">⌛</div>
+                            <div class="emoji-option" data-emoji="🕰">🕰</div>
+                            <div class="emoji-option" data-emoji="🔮">🔮</div>
+                            <div class="emoji-option" data-emoji="🎀">🎀</div>
+                            <div class="emoji-option" data-emoji="❤">❤</div>
+                            <div class="emoji-option" data-emoji="⚜️">⚜️</div>
+                            <div class="emoji-option" data-emoji="💲">💲</div>
+                            <div class="emoji-option" data-emoji="📢">📢</div>
+                            <div class="emoji-option" data-emoji="💬">💬</div>
+                            <div class="emoji-option" data-emoji="💭">💭</div>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label>🌈 Pick your favorite color:</label>
                         <div class="color-selector">
-                            <div class="color-option" data-color="#FF6B6B" style="background: #FF6B6B;"></div>
-                            <div class="color-option" data-color="#4ECDC4" style="background: #4ECDC4;"></div>
-                            <div class="color-option" data-color="#45B7D1" style="background: #45B7D1;"></div>
-                            <div class="color-option" data-color="#96CEB4" style="background: #96CEB4;"></div>
-                            <div class="color-option" data-color="#FFEAA7" style="background: #FFEAA7;"></div>
-                            <div class="color-option" data-color="#DDA0DD" style="background: #DDA0DD;"></div>
-                            <div class="color-option" data-color="#98D8C8" style="background: #98D8C8;"></div>
-                            <div class="color-option" data-color="#F7DC6F" style="background: #F7DC6F;"></div>
-                            <div class="color-option" data-color="#FFB6C1" style="background: #FFB6C1;"></div>
-                            <div class="color-option" data-color="#87CEEB" style="background: #87CEEB;"></div>
-                            <div class="color-option" data-color="#98FB98" style="background: #98FB98;"></div>
-                            <div class="color-option" data-color="#F0E68C" style="background: #F0E68C;"></div>
+                            <div class="color-option" data-color="#1E3A8A" style="background: #1E3A8A;"></div>
+                            <div class="color-option" data-color="#3B82F6" style="background: #3B82F6;"></div>
+                            <div class="color-option" data-color="#60A5FA" style="background: #60A5FA;"></div>
+                            <div class="color-option" data-color="#FCD34D" style="background: #FCD34D;"></div>
+                            <div class="color-option" data-color="#10B981" style="background: #10B981;"></div>
+                            <div class="color-option" data-color="#000000" style="background: #000000;"></div>
+                            <div class="color-option" data-color="#1E40AF" style="background: #1E40AF;"></div>
+                            <div class="color-option" data-color="#059669" style="background: #059669;"></div>
+                            <div class="color-option" data-color="#F59E0B" style="background: #F59E0B;"></div>
+                            <div class="color-option" data-color="#2563EB" style="background: #2563EB;"></div>
+                            <div class="color-option" data-color="#0891B2" style="background: #0891B2;"></div>
+                            <div class="color-option" data-color="#84CC16" style="background: #84CC16;"></div>
                         </div>
                     </div>
                     
                     <div class="form-actions">
                         <button class="btn secondary" onclick="showWelcome()">← Back</button>
-                        <button class="btn primary" onclick="createProfile()">Create Profile! 🎉</button>
+                        <button class="btn primary" onclick="createProfile()">Create Epic Profile! 🎉</button>
                     </div>
                 </div>
             </div>
@@ -130,8 +156,8 @@
         <div id="existing-profiles" class="screen">
             <div class="profiles-content">
                 <div class="mascot-header">
-                    <div class="mascot-large">👨‍👩‍👧‍👦</div>
-                    <h2>Choose Your Profile!</h2>
+                    <div class="mascot-large">🏆</div>
+                    <h2>Choose Your Epic Profile!</h2>
                 </div>
                 <div id="profiles-list" class="profiles-list"></div>
                 <div class="form-actions">
@@ -154,17 +180,17 @@
                 
                 <div class="header-center">
                     <button class="voice-search-btn" onclick="startVoiceSearch()">
-                        <span class="mic-icon">🎤</span>
+                        <span class="mic-icon">📢</span>
                         <span class="voice-text">Say what you want!</span>
                     </button>
                 </div>
                 
                 <div class="header-right">
                     <div class="profile-bubble" id="current-profile">
-                        <span class="profile-emoji">🐶</span>
+                        <span class="profile-emoji">😎</span>
                         <span class="profile-name">Guest</span>
                     </div>
-                    <button class="parent-lock-btn" onclick="showSettings()">🔒</button>
+                    <button class="parent-lock-btn" onclick="showSettings()">🔮</button>
                 </div>
             </header>
 
@@ -172,24 +198,24 @@
             <nav class="category-nav">
                 <div class="category-carousel">
                     <button class="category-pill active" data-category="all" onclick="selectCategory('all')">
-                        <span class="category-icon">🌟</span>
+                        <span class="category-icon">🎬</span>
                         <span class="category-label">All Videos</span>
                     </button>
                     <button class="category-pill" data-category="learning" onclick="selectCategory('learning')">
-                        <span class="category-icon">📚</span>
+                        <span class="category-icon">💻</span>
                         <span class="category-label">Learning</span>
                     </button>
                     <button class="category-pill" data-category="music" onclick="selectCategory('music')">
-                        <span class="category-icon">🎵</span>
+                        <span class="category-icon">🎹</span>
                         <span class="category-label">Music</span>
                     </button>
                     <button class="category-pill" data-category="shows" onclick="selectCategory('shows')">
-                        <span class="category-icon">📺</span>
+                        <span class="category-icon">🏆</span>
                         <span class="category-label">Shows</span>
                     </button>
                     <button class="category-pill" data-category="games" onclick="selectCategory('games')">
-                        <span class="category-icon">🎮</span>
-                        <span class="category-label">Fun</span>
+                        <span class="category-icon">💥</span>
+                        <span class="category-label">Epic Fun</span>
                     </button>
                 </div>
             </nav>
@@ -211,9 +237,9 @@
                     <div class="video-info" id="video-info">
                         <h3 id="video-title">Select a video to start watching!</h3>
                         <div class="video-actions">
-                            <button class="action-btn" onclick="likeVideo()">👍 Like</button>
-                            <button class="action-btn" onclick="shareVideo()">📤 Share</button>
-                            <button class="action-btn" onclick="saveVideo()">💾 Save</button>
+                            <button class="action-btn" onclick="likeVideo()">🥇 Epic</button>
+                            <button class="action-btn" onclick="shareVideo()">💬 Share</button>
+                            <button class="action-btn" onclick="saveVideo()">🔮 Save</button>
                         </div>
                     </div>
                 </div>
@@ -221,17 +247,17 @@
 
             <!-- Mascot Guide -->
             <div class="mascot-guide" id="mascot-guide">
-                <div class="mascot-character bounce">🦸‍♂️</div>
+                <div class="mascot-character bounce">🗿</div>
                 <div class="mascot-speech-bubble">
-                    <p id="mascot-message">Hi there! Pick a video to watch! �</p>
+                    <p id="mascot-message">Yo! Pick an epic video to watch! 🎬</p>
                 </div>
             </div>
 
             <!-- Video Grid (YouTube Kids Style) -->
             <div class="video-grid" id="video-grid">
                 <div class="loading-spinner" id="loading-spinner">
-                    <div class="spinner-mascot">🎠</div>
-                    <p>Loading awesome videos...</p>
+                    <div class="spinner-mascot">💻</div>
+                    <p>Loading epic videos...</p>
                     <div class="loading-dots">
                         <span></span>
                         <span></span>
@@ -246,8 +272,8 @@
         <div id="settings-screen" class="screen">
             <div class="settings-content">
                 <div class="mascot-header">
-                    <div class="mascot-large">⚙️</div>
-                    <h2>Settings</h2>
+                    <div class="mascot-large">🔮</div>
+                    <h2>Epic Settings</h2>
                 </div>
                 
                 <div class="settings-section">
@@ -277,7 +303,7 @@
                 <div class="settings-section">
                     <h3>⏰ Screen Time</h3>
                     <div class="setting-item">
-                        <span class="setting-icon">⏱️</span>
+                        <span class="setting-icon">🕰</span>
                         <div class="setting-content">
                             <label>Time Limit:</label>
                             <select id="time-limit-select" onchange="setTimeLimit()">
@@ -297,12 +323,12 @@
                 <div class="settings-section">
                     <h3>📺 Video Playlist</h3>
                     <div class="setting-item">
-                        <span class="setting-icon">📋</span>
+                        <span class="setting-icon">�</span>
                         <div class="setting-content">
                             <label>Choose Playlist:</label>
                             <select id="playlist-select" onchange="changePlaylist()">
-                                <option value="PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d">Fun Learning Videos</option>
-                                <option value="PLO2NpzUDdem3WVqnpyzHHlu_f8att4bsH">Educational Adventures</option>
+                                <option value="PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d">Epic Learning Videos</option>
+                                <option value="PLO2NpzUDdem3WVqnpyzHHlu_f8att4bsH">Legendary Adventures</option>
                             </select>
                         </div>
                     </div>
@@ -335,13 +361,13 @@
         <!-- Time Limit Modal -->
         <div id="time-limit-modal" class="modal">
             <div class="modal-content">
-                <div class="modal-mascot">⏰</div>
+                <div class="modal-mascot">🕰</div>
                 <h2>Time for a Break!</h2>
-                <p>You've been watching for a while. Your eyes need a rest! 🌟</p>
+                <p>You've been watching for a while. Time to chill! 😎</p>
                 <div class="break-animation">
-                    <div class="bounce-emoji">🌈</div>
-                    <div class="bounce-emoji">⭐</div>
-                    <div class="bounce-emoji">🎈</div>
+                    <div class="bounce-emoji">🧊</div>
+                    <div class="bounce-emoji">☁</div>
+                    <div class="bounce-emoji">💥</div>
                 </div>
                 <div class="modal-actions">
                     <button class="btn primary" onclick="extendTime()">5 More Minutes Please! 🙏</button>
@@ -353,7 +379,7 @@
         <!-- Parent Lock Modal -->
         <div id="parent-lock-modal" class="modal">
             <div class="modal-content">
-                <div class="modal-mascot">🔒</div>
+                <div class="modal-mascot">🔮</div>
                 <h2>Parent Verification</h2>
                 <p>Solve this simple math problem:</p>
                 <div id="math-problem" class="math-problem"></div>
