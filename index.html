@@ -1,25 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cursor AI</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CritterTube - Safe Videos for Kids</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Cursor AI</h1>
-      <p>Your coding co-pilot</p>
-    </header>
-    <main id="chat-box">
-      <div class="message ai">Hello! I'm Cursor AI. How can I help you code today?</div>
-    </main>
-    <footer>
-      <input type="text" id="user-input" placeholder="Type your question..." />
-      <button onclick="sendMessage()">Send</button>
-    </footer>
-  </div>
-  <script src="script.js"></script>
+    <!-- Animated Background -->
+    <div class="animated-background">
+        <div class="emoji-float">🐶</div>
+        <div class="emoji-float">🐱</div>
+        <div class="emoji-float">🐼</div>
+        <div class="emoji-float">🐵</div>
+        <div class="emoji-float">🐰</div>
+        <div class="emoji-float">🦊</div>
+        <div class="emoji-float">🐸</div>
+        <div class="emoji-float">🐢</div>
+        <div class="emoji-float">🦋</div>
+        <div class="emoji-float">🐝</div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <h1 class="app-title">🎬 CritterTube</h1>
+                <p class="app-subtitle">Safe & Fun Videos for Kids!</p>
+                
+                <div class="access-options">
+                    <button class="access-btn guest-btn" onclick="startGuestMode()">
+                        👥 Guest Mode
+                        <span>Start watching right away!</span>
+                    </button>
+                    
+                    <button class="access-btn profile-btn" onclick="showProfileSetup()">
+                        👤 Create Profile
+                        <span>Customize your experience!</span>
+                    </button>
+                    
+                    <button class="access-btn existing-btn" onclick="showExistingProfiles()" id="existing-profiles-btn" style="display: none;">
+                        🏠 My Profiles
+                        <span>Choose your saved profile!</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Setup Screen -->
+        <div id="profile-setup" class="screen">
+            <div class="profile-content">
+                <h2>🎨 Create Your Profile</h2>
+                
+                <div class="profile-form">
+                    <div class="form-group">
+                        <label>What's your name?</label>
+                        <input type="text" id="profile-name" placeholder="Enter your name" maxlength="20">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Choose your animal friend:</label>
+                        <div class="emoji-selector">
+                            <div class="emoji-option" data-emoji="🐶">🐶</div>
+                            <div class="emoji-option" data-emoji="🐱">🐱</div>
+                            <div class="emoji-option" data-emoji="🐼">🐼</div>
+                            <div class="emoji-option" data-emoji="🐵">🐵</div>
+                            <div class="emoji-option" data-emoji="🐰">🐰</div>
+                            <div class="emoji-option" data-emoji="🦊">🦊</div>
+                            <div class="emoji-option" data-emoji="🐸">🐸</div>
+                            <div class="emoji-option" data-emoji="🐢">🐢</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Pick your favorite color:</label>
+                        <div class="color-selector">
+                            <div class="color-option" data-color="#FF6B6B" style="background: #FF6B6B;"></div>
+                            <div class="color-option" data-color="#4ECDC4" style="background: #4ECDC4;"></div>
+                            <div class="color-option" data-color="#45B7D1" style="background: #45B7D1;"></div>
+                            <div class="color-option" data-color="#96CEB4" style="background: #96CEB4;"></div>
+                            <div class="color-option" data-color="#FFEAA7" style="background: #FFEAA7;"></div>
+                            <div class="color-option" data-color="#DDA0DD" style="background: #DDA0DD;"></div>
+                            <div class="color-option" data-color="#98D8C8" style="background: #98D8C8;"></div>
+                            <div class="color-option" data-color="#F7DC6F" style="background: #F7DC6F;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn secondary" onclick="showWelcome()">← Back</button>
+                        <button class="btn primary" onclick="createProfile()">Create Profile! 🎉</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Existing Profiles Screen -->
+        <div id="existing-profiles" class="screen">
+            <div class="profiles-content">
+                <h2>👨‍👩‍👧‍👦 Choose Your Profile</h2>
+                <div id="profiles-list" class="profiles-list"></div>
+                <div class="form-actions">
+                    <button class="btn secondary" onclick="showWelcome()">← Back</button>
+                    <button class="btn primary" onclick="showProfileSetup()">+ New Profile</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Screen -->
+        <div id="main-app" class="screen">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-left">
+                    <h1 class="app-logo">🎬 CritterTube</h1>
+                </div>
+                <div class="header-right">
+                    <div class="profile-info" id="current-profile">
+                        <span class="profile-emoji">🐶</span>
+                        <span class="profile-name">Guest</span>
+                    </div>
+                    <button class="btn settings-btn" onclick="showSettings()">⚙️</button>
+                </div>
+            </header>
+
+            <!-- Video Player Section -->
+            <div id="video-section" class="video-section" style="display: none;">
+                <div class="video-container">
+                    <div id="youtube-player"></div>
+                    <div class="video-controls">
+                        <button class="control-btn" onclick="previousVideo()">⏮️ Previous</button>
+                        <button class="control-btn" onclick="togglePlayPause()" id="play-pause-btn">⏸️ Pause</button>
+                        <button class="control-btn" onclick="nextVideo()">⏭️ Next</button>
+                        <button class="control-btn" onclick="toggleFullscreen()">🔲 Fullscreen</button>
+                    </div>
+                    <div class="video-info" id="video-info">
+                        <h3 id="video-title">Select a video to start watching!</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Grid -->
+            <div class="video-grid" id="video-grid">
+                <h2 class="section-title">🎥 Fun Videos for You!</h2>
+                <div class="loading-spinner" id="loading-spinner">
+                    <div class="spinner">🎠</div>
+                    <p>Loading awesome videos...</p>
+                </div>
+                <div class="videos-container" id="videos-container"></div>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settings-screen" class="screen">
+            <div class="settings-content">
+                <h2>⚙️ Settings</h2>
+                
+                <div class="settings-section">
+                    <h3>🎨 Appearance</h3>
+                    <div class="setting-item">
+                        <label class="toggle-label">
+                            Dark Mode
+                            <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🔊 Audio</h3>
+                    <div class="setting-item">
+                        <label class="toggle-label">
+                            UI Sounds
+                            <input type="checkbox" id="sound-toggle" checked onchange="toggleSounds()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>⏰ Screen Time</h3>
+                    <div class="setting-item">
+                        <label>Time Limit (minutes):</label>
+                        <select id="time-limit-select" onchange="setTimeLimit()">
+                            <option value="0">No Limit</option>
+                            <option value="15">15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60">60 minutes</option>
+                        </select>
+                    </div>
+                    <div class="time-remaining" id="time-remaining" style="display: none;">
+                        Time remaining: <span id="time-left">0</span> minutes
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>📺 Video Playlist</h3>
+                    <div class="setting-item">
+                        <label>Choose Playlist:</label>
+                        <select id="playlist-select" onchange="changePlaylist()">
+                            <option value="PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d">Fun Learning Videos</option>
+                            <option value="PLO2NpzUDdem3WVqnpyzHHlu_f8att4bsH">Educational Adventures</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>👤 Profile</h3>
+                    <div class="setting-item">
+                        <button class="btn secondary" onclick="editProfile()">Edit Profile</button>
+                        <button class="btn secondary" onclick="switchProfile()">Switch Profile</button>
+                        <button class="btn danger" onclick="deleteProfile()">Delete Profile</button>
+                    </div>
+                </div>
+
+                <div class="settings-section parent-lock" id="parent-lock">
+                    <h3>🔒 Parent Controls</h3>
+                    <p>Some settings require parent permission</p>
+                    <button class="btn primary" onclick="showParentLock()">Access Parent Controls</button>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn primary" onclick="hideSettings()">← Back to Videos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Limit Modal -->
+        <div id="time-limit-modal" class="modal">
+            <div class="modal-content">
+                <h2>⏰ Time's Up!</h2>
+                <p>You've been watching for a while. Time for a break! 🌟</p>
+                <div class="break-animation">
+                    <div class="bounce-emoji">🌈</div>
+                    <div class="bounce-emoji">⭐</div>
+                    <div class="bounce-emoji">🎈</div>
+                </div>
+                <button class="btn primary" onclick="extendTime()">5 More Minutes Please! 🙏</button>
+                <button class="btn secondary" onclick="takeBreak()">Take a Break 😴</button>
+            </div>
+        </div>
+
+        <!-- Parent Lock Modal -->
+        <div id="parent-lock-modal" class="modal">
+            <div class="modal-content">
+                <h2>🔒 Parent Verification</h2>
+                <p>Solve this simple math problem:</p>
+                <div id="math-problem" class="math-problem"></div>
+                <input type="number" id="math-answer" placeholder="Your answer">
+                <div class="form-actions">
+                    <button class="btn secondary" onclick="hideParentLock()">Cancel</button>
+                    <button class="btn primary" onclick="checkParentAnswer()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="click-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmM=" type="audio/wav">
+    </audio>
+
+    <!-- YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="script.js"></script>
 </body>
 </html>
