@@ -1,9 +1,9 @@
 // Bubblio - Child-Friendly Video Streaming App
-// Global Variables
-const YOUTUBE_API_KEY = 'AIzaSyCRp1Gqj5yO2EHlUdlbTVipFWgFGAOM40Y';
-const PLAYLISTS = {
-    'PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d': 'Fun Learning Videos',
-    'PLO2NpzUDdem3WVqnpyzHHlu_f8att4bsH': 'Educational Adventures'
+// Global Variables - Loaded from config.js
+const YOUTUBE_API_KEY = CONFIG?.YOUTUBE_API_KEY || 'AIzaSyCRp1Gqj5yO2EHlUdlbTVipFWgFGAOM40Y';
+const PLAYLISTS = CONFIG?.PLAYLISTS || {
+    'PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d': 'Epic Learning Videos',
+    'PLO2NpzUDdem3WVqnpyzHHlu_f8att4bsH': 'Legendary Adventures'
 };
 
 let currentPlaylist = 'PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d';
@@ -389,11 +389,13 @@ function makeElementsFocusable() {
 }
 
 function isMobile() {
-    return window.innerWidth <= 768 || 'ontouchstart' in window;
+    const mobileBreakpoint = CONFIG?.MOBILE_BREAKPOINT || 768;
+    return window.innerWidth <= mobileBreakpoint || 'ontouchstart' in window;
 }
 
 function isTV() {
-    return window.innerWidth >= 1200 && window.innerHeight >= 600;
+    const tvBreakpoint = CONFIG?.TV_BREAKPOINT || 1200;
+    return window.innerWidth >= tvBreakpoint && window.innerHeight >= 600;
 }
 
 // Screen Management
@@ -419,30 +421,55 @@ function showScreen(screenId) {
 function startGuestMode() {
     console.log('Starting guest mode...'); // Debug log
     
-    triggerBubbleAnimation();
-    playSound('success');
-    
+    // Set current profile first
     currentProfile = {
         name: 'Guest',
         emoji: '😎',
         color: '#3B82F6',
         isGuest: true
     };
+    
+    // Play sound and show animation
+    playSound('success');
+    triggerBubbleAnimation();
+    
+    // Update profile display
     updateCurrentProfile();
     
-    // Show main app after bubble animation
+    // Navigate to main app after animation
     setTimeout(() => {
         console.log('Transitioning to main app...'); // Debug log
-        showMainApp();
-    }, 1200); // Increased delay to ensure animation completes
+        showScreen('main-app');
+        loadVideos(); // Load videos when entering main app
+        startScreenTimeTracking();
+        
+        // Focus first category for TV navigation
+        setTimeout(() => {
+            const firstCategory = document.querySelector('.category-pill');
+            if (firstCategory && isTV()) {
+                firstCategory.focus();
+            }
+        }, 500);
+    }, 1200);
 }
 
 function showProfileSetup() {
-    triggerBubbleAnimation();
+    console.log('Showing profile setup...'); // Debug log
+    
     playSound('success');
+    triggerBubbleAnimation();
     
     setTimeout(() => {
+        console.log('Navigating to profile setup screen...'); // Debug log
         showScreen('profile-setup');
+        
+        // Focus first input for better UX
+        setTimeout(() => {
+            const nameInput = document.getElementById('profile-name');
+            if (nameInput) {
+                nameInput.focus();
+            }
+        }, 200);
     }, 1200);
 }
 
@@ -498,17 +525,30 @@ function createProfile() {
         isGuest: false
     };
     
+    // Save profile and set as current
     saveProfile(profile);
     currentProfile = profile;
     updateCurrentProfile();
     
-    triggerBubbleAnimation();
+    // Show success and animate
     playSound('success');
     showSuccess('Profile created successfully! 🎉');
+    triggerBubbleAnimation();
     
-    // Delay the screen transition to allow bubble animation to play
+    // Navigate to main app
     setTimeout(() => {
-        showMainApp();
+        console.log('Profile created, navigating to main app...'); // Debug log
+        showScreen('main-app');
+        loadVideos();
+        startScreenTimeTracking();
+        
+        // Focus first category for TV navigation
+        setTimeout(() => {
+            const firstCategory = document.querySelector('.category-pill');
+            if (firstCategory && isTV()) {
+                firstCategory.focus();
+            }
+        }, 500);
     }, 1200);
 }
 
@@ -545,17 +585,32 @@ function loadExistingProfiles() {
 }
 
 function selectProfile(profile) {
-    triggerBubbleAnimation(); // Add bubble animation
+    console.log('Selecting profile:', profile.name); // Debug log
     
+    // Set profile and update display
     currentProfile = profile;
     updateCurrentProfile();
     
-    // Delay the screen transition to allow bubble animation to play
-    setTimeout(() => {
-        showMainApp();
-    }, 800);
-    
+    // Play sound and animate
+    playSound('success');
     showSuccess(`Welcome back, ${profile.name}! 🎉`);
+    triggerBubbleAnimation();
+    
+    // Navigate to main app
+    setTimeout(() => {
+        console.log('Profile selected, navigating to main app...'); // Debug log
+        showScreen('main-app');
+        loadVideos();
+        startScreenTimeTracking();
+        
+        // Focus first category for TV navigation
+        setTimeout(() => {
+            const firstCategory = document.querySelector('.category-pill');
+            if (firstCategory && isTV()) {
+                firstCategory.focus();
+            }
+        }, 500);
+    }, 1200);
 }
 
 function updateCurrentProfile() {
@@ -570,6 +625,7 @@ function updateCurrentProfile() {
 
 // Main App Functions
 function showMainApp() {
+    console.log('Showing main app...'); // Debug log
     showScreen('main-app');
     loadVideos();
     startScreenTimeTracking();
@@ -643,27 +699,58 @@ function onPlayerError(event) {
 
 // Video Functions
 async function loadVideos() {
+    console.log('Loading videos for playlist:', currentPlaylist); // Debug log
     showLoading(true);
     
     try {
-        const response = await fetch(
-            `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${currentPlaylist}&key=${YOUTUBE_API_KEY}`
-        );
+        // Construct YouTube Data API v3 URL
+        const apiUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${currentPlaylist}&key=${YOUTUBE_API_KEY}`;
+        console.log('API URL:', apiUrl); // Debug log
+        
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            }
+        });
         
         if (!response.ok) {
-            throw new Error('Failed to fetch videos');
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
-        videos = data.items.filter(item => item.snippet.resourceId?.videoId);
+        console.log('API Response:', data); // Debug log
+        
+        if (data.error) {
+            throw new Error(`YouTube API Error: ${data.error.message}`);
+        }
+        
+        // Filter valid video items
+        videos = data.items.filter(item => 
+            item.snippet && 
+            item.snippet.resourceId && 
+            item.snippet.resourceId.videoId &&
+            item.snippet.title !== 'Private video' &&
+            item.snippet.title !== 'Deleted video'
+        );
+        
+        console.log('Loaded videos:', videos.length); // Debug log
+        
+        if (videos.length === 0) {
+            throw new Error('No valid videos found in playlist');
+        }
         
         displayVideos();
         showLoading(false);
+        updateMascotMessage(`Found ${videos.length} epic videos! Pick one to start! 🎬`);
         
     } catch (error) {
         console.error('Error loading videos:', error);
-        showError('Failed to load videos. Please try again later.');
+        showError(`Failed to load videos: ${error.message}`);
         showLoading(false);
+        
+        // Show fallback message
+        updateMascotMessage('Oops! Having trouble loading videos. Check your internet connection! 📶');
     }
 }
 

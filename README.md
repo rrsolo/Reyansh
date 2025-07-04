@@ -1,237 +1,165 @@
-# 🎬 CritterTube - Safe Video Fun for Kids
+# 🫧 Bubblio - Epic Kids Video App
 
-A secure, child-friendly video streaming web application designed specifically for children aged 3-10 years. CritterTube provides a curated, safe, and engaging video viewing experience by exclusively streaming videos from pre-defined YouTube playlists.
+A safe, child-friendly video streaming app designed for kids aged 3-10. Built with love by **RishiRohith** for his little brother.
 
 ## ✨ Features
 
-### 🎨 Child-Friendly Design
-- **Vibrant Interface**: Colorful, animated design with soft animal emoji backgrounds
-- **Intuitive Navigation**: Large buttons and simple controls designed for young children
-- **Animated Backgrounds**: Floating animal emojis with subtle animations
-- **Responsive Design**: Works perfectly on desktop, tablet, and mobile devices
+- **� Safe Video Streaming**: Curated content via YouTube Data API v3
+- **😎 Epic Profiles**: Custom profiles with favorite emojis and colors  
+- **🫧 Bubble Animations**: Playful transitions and effects
+- **📱 Multi-Device**: Optimized for Mobile, Android TV, and Desktop
+- **🔊 Interactive**: Voice search, sound effects, and animations
+- **⏰ Screen Time**: Built-in parental controls and time limits
+- **🎨 Beautiful UI**: Colorful, kid-friendly design with epic emojis
 
-### 👤 Profile Management
-- **Guest Mode**: Instant access without creating an account
-- **Custom Profiles**: Create personalized profiles with:
-  - Custom names
-  - Animal emoji avatars (🐶🐱🐼🐵🐰🦊🐸🐢)
-  - Favorite color themes
-  - Local storage (no data sent to servers)
-- **Multiple Profiles**: Support for multiple children on the same device
-
-### 🛡️ Safety Features
-- **Curated Content**: Only videos from pre-approved YouTube playlists
-- **No Ads**: Clean interface without advertisements
-- **No Comments**: Comments section completely hidden
-- **No Recommendations**: Prevents access to unvetted content
-- **Sandboxed Player**: Secure YouTube iframe integration
-- **Parent Lock**: Math-based verification for sensitive settings
-
-### ⏰ Screen Time Controls
-- **Time Limits**: Set viewing time limits (15, 30, 45, or 60 minutes)
-- **Break Reminders**: Friendly notifications when time limits are reached
-- **Extension Options**: Children can request 5 more minutes
-- **Automatic Tracking**: Real-time monitoring of viewing time
-
-### 🎵 Audio & Visual Experience
-- **UI Sounds**: Pleasant sound effects for interactions
-- **Volume Control**: Easy mute/unmute functionality
-- **Dark Mode**: Eye-friendly dark theme option
-- **Smooth Animations**: Engaging transitions and effects
-
-### 🎮 Advanced Controls
-- **Keyboard Navigation**:
-  - `Space` - Play/Pause
-  - `Arrow Left` - Previous video
-  - `Arrow Right` - Next video
-  - `F` - Fullscreen
-  - `Escape` - Exit fullscreen
-- **Touch/Swipe Support**: Swipe left/right to change videos on mobile
-- **Voice Commands**: Basic voice control support (Chrome only)
-- **Fullscreen Mode**: Immersive viewing experience
-
-### 📺 Video Features
-- **Auto-Play**: Seamless transition between videos in playlist
-- **Quality Selection**: Automatic quality adjustment
-- **Thumbnail Preview**: Visual video selection grid
-- **Progress Tracking**: Remember playback position
-- **Error Handling**: Graceful handling of unavailable videos
-
-## 🚀 Getting Started
+## 🚀 GitHub Pages Deployment
 
 ### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- Internet connection for YouTube content
-- YouTube Data API key (provided)
+- GitHub account
+- YouTube Data API v3 key (see API Setup below)
 
-### Installation
-1. Download all files to a directory
-2. Open `index.html` in a web browser, or
-3. Run a local server:
+### Quick Deploy Steps
+
+1. **Fork/Clone this repository**
    ```bash
-   python3 -m http.server 8000
+   git clone https://github.com/yourusername/bubblio.git
+   cd bubblio
    ```
-   Then visit `http://localhost:8000`
 
-### First Time Setup
-1. **Welcome Screen**: Choose between Guest Mode or Create Profile
-2. **Profile Creation** (optional):
-   - Enter child's name
-   - Select favorite animal emoji
-   - Pick favorite color
-3. **Start Watching**: Begin enjoying safe, curated videos!
+2. **Configure API Key**
+   - Open `script.js`
+   - Replace the API key on line 3:
+   ```javascript
+   const YOUTUBE_API_KEY = 'YOUR_API_KEY_HERE';
+   ```
 
-## 🎯 How to Use
+3. **Enable GitHub Pages**
+   - Go to repository Settings → Pages
+   - Source: Deploy from a branch
+   - Branch: `main` (or `master`)
+   - Folder: `/ (root)`
+   - Click Save
 
-### For Children
-1. **Start**: Click "Guest Mode" or select your profile
-2. **Browse**: Look at video thumbnails and click to watch
-3. **Watch**: Use simple controls (play, pause, next, previous)
-4. **Enjoy**: Videos automatically play one after another
+4. **Access Your App**
+   - Your app will be available at: `https://yourusername.github.io/bubblio`
+   - Allow 5-10 minutes for initial deployment
 
-### For Parents
-1. **Settings**: Click the ⚙️ gear icon in the top right
-2. **Screen Time**: Set time limits for viewing sessions
-3. **Playlist**: Choose between different age-appropriate playlists
-4. **Parent Lock**: Access advanced settings with math verification
-5. **Profiles**: Manage, edit, or delete child profiles
+## 🔑 YouTube Data API v3 Setup
 
-## 🔧 Configuration
+### Get Your API Key
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
+3. Enable **YouTube Data API v3**
+4. Go to Credentials → Create Credentials → API Key
+5. Restrict the key (recommended):
+   - HTTP referrers: Add your GitHub Pages domain
+   - APIs: YouTube Data API v3 only
 
-### Playlists
-The app comes configured with two playlists:
-- **Fun Learning Videos**: Educational content for younger children
-- **Educational Adventures**: More advanced educational content
+### Configure Playlists
+Replace the playlist IDs in `script.js` (line 4-7):
+```javascript
+const PLAYLISTS = {
+    'YOUR_PLAYLIST_ID_1': 'Epic Learning Videos',
+    'YOUR_PLAYLIST_ID_2': 'Legendary Adventures'
+};
+```
 
-### Settings Options
-- **Appearance**: Light/Dark mode toggle
-- **Audio**: Enable/disable UI sounds
-- **Screen Time**: 15, 30, 45, or 60-minute limits
-- **Playlist Selection**: Switch between available playlists
-- **Profile Management**: Edit, switch, or delete profiles
+## 📱 Device Support
 
-## 🛡️ Safety Measures
+### 📺 Android TV
+- **Remote Navigation**: Full D-pad support
+- **Voice Search**: "Say what you want!"
+- **Large UI**: TV-optimized interface
+- **Focus Management**: Clear visual indicators
 
-### Content Control
-- Videos sourced only from approved YouTube playlists
-- No access to YouTube's recommendation algorithm
-- No ads, comments, or external links
-- Sandboxed iframe prevents navigation away from content
+### 📱 Mobile/Tablet
+- **Touch Friendly**: Large buttons and touch targets
+- **Swipe Gestures**: Swipe left/right for video navigation
+- **Responsive Design**: Adapts to all screen sizes
+- **Portrait Support**: Optimized layouts
 
-### Privacy Protection
-- All data stored locally (no server uploads)
-- No personal information collection
-- No tracking or analytics
-- No account creation required
-
-### Parental Controls
-- Math-based parent verification system
-- Screen time limit enforcement
-- Playlist switching restrictions
-- Profile management controls
-
-## 📱 Technical Details
-
-### Browser Compatibility
-- **Recommended**: Chrome, Firefox, Safari, Edge (latest versions)
-- **Mobile**: iOS Safari, Android Chrome
-- **Requirements**: JavaScript enabled, local storage support
-
-### APIs Used
-- **YouTube Data API v3**: For playlist content fetching
-- **YouTube IFrame API**: For secure video playback
-- **Web Audio API**: For UI sound effects
-- **Local Storage API**: For profile and settings persistence
-
-### Performance
-- **Lazy Loading**: Video thumbnails load as needed
-- **Responsive Images**: Optimized thumbnail sizes
-- **Minimal API Calls**: Efficient YouTube API usage
-- **Local Caching**: Settings and profiles stored locally
+### 💻 Desktop
+- **Keyboard Shortcuts**: Full keyboard navigation
+- **Mouse Support**: Click and hover interactions
+- **Fullscreen**: F key for fullscreen videos
 
 ## 🎨 Customization
 
-### Adding New Playlists
-1. Locate the `PLAYLISTS` object in `script.js`
-2. Add new playlist ID and name:
-   ```javascript
-   const PLAYLISTS = {
-       'PLAYLIST_ID_1': 'Playlist Name 1',
-       'PLAYLIST_ID_2': 'Playlist Name 2',
-       'NEW_PLAYLIST_ID': 'New Playlist Name'
-   };
-   ```
+### Emojis & Colors
+- Brother's favorite emojis are used throughout
+- Color scheme: Deep Blues, Yellow, Green with black outlines
+- Easy to modify in CSS variables (lines 9-19 in `style.css`)
 
-### Modifying Colors
-1. Edit CSS custom properties in `style.css`:
-   ```css
-   :root {
-       --primary-color: #FF6B6B;
-       --secondary-color: #4ECDC4;
-       /* Add more color customizations */
-   }
-   ```
+### Playlists
+- Currently supports 2 curated playlists
+- Easy to add more in `script.js` PLAYLISTS object
+- All content is filtered for safety
 
-### Adding New Emojis
-1. Add emoji options in the HTML:
-   ```html
-   <div class="emoji-option" data-emoji="🦁">🦁</div>
-   ```
+## 📁 File Structure
 
-## 🔍 Troubleshooting
+```
+bubblio/
+├── index.html          # Main HTML structure
+├── style.css           # Complete styling and responsive design
+├── script.js           # All functionality and API integration
+├── README.md           # This file
+└── assets/             # (Optional) Additional assets
+```
 
-### Common Issues
+## 🔧 Troubleshooting
 
-**Videos not loading:**
-- Check internet connection
-- Verify YouTube API key is valid
-- Ensure playlist is public and contains videos
+### Videos Not Loading?
+1. **Check API Key**: Ensure it's correctly set in `script.js`
+2. **Check Quotas**: YouTube API has daily limits
+3. **Check CORS**: Ensure referrer restrictions allow your domain
+4. **Check Console**: Open browser dev tools for error messages
 
-**Sounds not working:**
-- Check if browser allows autoplay
-- Verify device volume is up
-- Try refreshing the page
+### Navigation Issues?
+1. **Clear Cache**: Hard refresh (Ctrl+F5)
+2. **Check JavaScript**: Ensure no console errors
+3. **Check Playlists**: Ensure playlist IDs are valid and public
 
-**Profiles not saving:**
-- Ensure browser supports local storage
-- Check if private/incognito mode is disabled
-- Clear browser cache and try again
+### Mobile Issues?
+1. **Test Touch**: Ensure touch events work properly
+2. **Check Viewport**: Meta viewport tag should be present
+3. **Test Orientation**: Both portrait and landscape should work
 
-**Touch controls not working:**
-- Make sure you're swiping horizontally
-- Try tapping instead of swiping
-- Refresh the page and try again
+## 🌐 Browser Support
 
-## 🆘 Support
+- ✅ **Chrome** (Recommended)
+- ✅ **Firefox** 
+- ✅ **Safari**
+- ✅ **Edge**
+- ✅ **Mobile Browsers**
+- ✅ **Android TV Browser**
 
-### Browser Requirements
-- JavaScript must be enabled
-- Local storage must be allowed
-- Pop-ups should be allowed for fullscreen
+## 🚨 Important Notes
 
-### API Limitations
-- YouTube API has daily quotas
-- Some videos may be region-restricted
-- Playlist changes may take time to appear
+### Privacy & Usage
+- **Personal Project**: Not for commercial use or app stores
+- **Family Use**: Designed specifically for safe family viewing
+- **No Data Collection**: All data stored locally in browser
+- **YouTube API**: Respects YouTube's terms of service
 
-## 🎉 Features Roadmap
+### Performance
+- **Online Only**: Requires internet connection for video loading
+- **API Limits**: YouTube API has daily quotas (10,000 units/day default)
+- **Caching**: Videos are not cached locally for safety
 
-### Planned Enhancements
-- [ ] Multi-language support
-- [ ] Offline video caching
-- [ ] Progress sharing between devices
-- [ ] Advanced parental dashboard
-- [ ] Custom playlist creation
-- [ ] Educational progress tracking
+## 📞 Support
 
-## 📄 License
+This is a personal project made with ❤️. For issues:
+1. Check this README first
+2. Look at browser console for errors
+3. Verify API key and quotas
+4. Test with different browsers
 
-This project is designed for educational and family use. Please ensure compliance with YouTube's Terms of Service when using their API and content.
+## 🎯 Made with Love
 
-## 🤝 Contributing
-
-This is a complete, standalone application designed for family use. Feel free to customize and enhance it for your specific needs!
+Created by **RishiRohith** as a personal project for his little brother. The app focuses on providing a safe, fun, and educational video experience for young children.
 
 ---
 
-**Enjoy safe, educational video fun with CritterTube! 🎬🐶🐱🐼**
+**Remember**: This app requires the YouTube Data API v3 to function and must be hosted online to work properly due to CORS restrictions.
+
+Enjoy the epic video fun! 🎬✨
