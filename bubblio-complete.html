@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Bubblio - Cool Videos for Epic Kids</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1E3A8A;
+            --secondary-blue: #3B82F6;
+            --accent-blue: #60A5FA;
+            --bright-yellow: #FCD34D;
+            --bright-green: #10B981;
+            --black-outline: #000000;
+            --background-light: #F8FAFC;
+            --background-dark: #1E293B;
+            --text-light: #1E293B;
+            --text-dark: #FFFFFF;
+            --card-bg-light: #FFFFFF;
+            --card-bg-dark: #334155;
+            --border-radius: 25px;
+            --shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            --shadow-hover: 0 20px 45px rgba(0, 0, 0, 0.25);
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --black-border: 4px solid var(--black-outline);
+        }
+
+        body {
+            font-family: 'Comic Neue', cursive, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 30%, var(--bright-green) 60%, var(--bright-yellow) 100%);
+            color: var(--text-light);
+            transition: var(--transition);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--background-dark) 0%, var(--card-bg-dark) 50%, var(--primary-blue) 100%);
+            color: var(--text-dark);
+        }
+
+        /* Animated Background */
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(45deg, 
+                rgba(255, 107, 107, 0.1) 0%, 
+                rgba(78, 205, 196, 0.1) 25%, 
+                rgba(69, 183, 209, 0.1) 50%, 
+                rgba(150, 206, 180, 0.1) 75%, 
+                rgba(255, 234, 167, 0.1) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Bubble Animation */
+        .bubble-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            pointer-events: none;
+            overflow: hidden;
+            display: none;
+        }
+
+        .bubble-animation.active {
+            display: block;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            font-size: 2rem;
+            opacity: 0.8;
+            animation: bubbleFloat 1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes bubbleFloat {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                transform: translateY(-100vh) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* Bubblio Logo Styling */
+        .bubblio-logo {
+            font-family: 'Fredoka One', cursive;
+            font-size: 5rem;
+            font-weight: 400;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logoGradient 3s ease-in-out infinite, logoBounce 2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+            letter-spacing: 0.1em;
+            position: relative;
+        }
+
+        .bubblio-logo::before {
+            content: '🫧';
+            position: absolute;
+            left: -60px;
+            top: -10px;
+            font-size: 3rem;
+            animation: bubbleSpin 4s linear infinite;
+        }
+
+        .bubblio-logo::after {
+            content: '🫧';
+            position: absolute;
+            right: -60px;
+            top: -20px;
+            font-size: 2rem;
+            animation: bubbleSpin 3s linear infinite reverse;
+        }
+
+        @keyframes logoGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes logoBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        @keyframes bubbleSpin {
+            0% { transform: rotate(0deg) translateY(0px); }
+            50% { transform: rotate(180deg) translateY(-20px); }
+            100% { transform: rotate(360deg) translateY(0px); }
+        }
+
+        /* Made with Love Styling */
+        .made-with-love {
+            text-align: center;
+            margin-top: 3rem;
+            font-style: italic;
+            font-weight: bold;
+            color: white;
+            font-size: 1.1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: 'Comic Neue', cursive;
+            line-height: 1.4;
+        }
+
+        .made-with-love strong {
+            font-size: 1.3rem;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        /* Rishi's Note Styling */
+        .rishi-note {
+            background: linear-gradient(135deg, var(--bright-yellow), var(--bright-green));
+            border: var(--black-border);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--black-outline);
+            box-shadow: var(--shadow);
+        }
+
+        .note-header {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rishi-note p {
+            font-family: 'Comic Neue', cursive;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .emoji-float {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.3;
+            pointer-events: none;
+            filter: blur(1px);
+            animation: float 15s linear infinite;
+        }
+
+        .emoji-float:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 20s; }
+        .emoji-float:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 18s; }
+        .emoji-float:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 22s; }
+        .emoji-float:nth-child(4) { left: 40%; animation-delay: 1s; animation-duration: 19s; }
+        .emoji-float:nth-child(5) { left: 50%; animation-delay: 3s; animation-duration: 21s; }
+        .emoji-float:nth-child(6) { left: 60%; animation-delay: 5s; animation-duration: 17s; }
+        .emoji-float:nth-child(7) { left: 70%; animation-delay: 2.5s; animation-duration: 23s; }
+        .emoji-float:nth-child(8) { left: 80%; animation-delay: 4.5s; animation-duration: 16s; }
+        .emoji-float:nth-child(9) { left: 90%; animation-delay: 1.5s; animation-duration: 24s; }
+        .emoji-float:nth-child(10) { left: 95%; animation-delay: 3.5s; animation-duration: 20s; }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* App Container */
+        .app-container {
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Screen Management */
+        .screen {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Welcome Screen */
+        .welcome-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-top: 10vh;
+        }
+
+        /* Mascot Styles */
+        .mascot-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .mascot-character {
+            font-size: 4rem;
+            animation: mascotBounce 2s ease-in-out infinite;
+        }
+
+        .mascot-bounce {
+            font-size: 3rem;
+            animation: mascotBounce 2s ease-in-out infinite 0.5s;
+        }
+
+        @keyframes mascotBounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(-5deg); }
+            50% { transform: translateY(-25px) rotate(0deg); }
+            75% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        .app-title {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+        }
+
+        .app-subtitle {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 3rem;
+            color: var(--text-light);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 400;
+        }
+
+        .access-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .access-btn {
+            background: var(--card-bg-light);
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            min-height: 100px;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .access-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .access-btn:hover::before {
+            left: 100%;
+        }
+
+        .access-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-icon {
+            font-size: 3rem;
+            flex-shrink: 0;
+        }
+
+        .btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.3rem;
+        }
+
+        .btn-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .btn-subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            font-weight: 400;
+            font-family: 'Comic Neue', cursive;
+        }
+
+        .guest-btn {
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+            color: white;
+            border: var(--black-border);
+        }
+
+        .profile-btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--bright-green));
+            color: white;
+            border: var(--black-border);
+        }
+
+        .existing-btn {
+            background: linear-gradient(135deg, var(--bright-yellow), var(--bright-green));
+            color: var(--black-outline);
+            border: var(--black-border);
+            font-weight: 700;
+        }
+
+        /* Profile Setup */
+        .profile-content, .profiles-content, .settings-content {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg-light);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+            border: var(--black-border);
+        }
+
+        body.dark-mode .profile-content,
+        body.dark-mode .profiles-content,
+        body.dark-mode .settings-content {
+            background: var(--card-bg-dark);
+        }
+
+        /* Continue with more CSS styles... */
+        .mascot-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .mascot-large {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: mascotBounce 2s ease-in-out infinite;
+        }
+
+        .mascot-header h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2rem;
+            color: var(--primary-blue);
+            font-weight: 400;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #E9ECEF;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .emoji-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .color-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .emoji-option, .color-option {
+            aspect-ratio: 1;
+            border: 3px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emoji-option {
+            background: #F8F9FA;
+        }
+
+        .color-option {
+            border-radius: 50%;
+        }
+
+        .emoji-option:hover, .color-option:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow);
+        }
+
+        .emoji-option.selected, .color-option.selected {
+            border-color: var(--primary-color);
+            transform: scale(1.1);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.3);
+        }
+
+        .emoji-option.selected::after, .color-option.selected::after {
+            content: '✓';
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            background: var(--primary-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            border: var(--black-border);
+            font-family: 'Fredoka One', cursive;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, var(--bright-green), var(--accent-blue));
+            color: white;
+            border: var(--black-border);
+            font-family: 'Fredoka One', cursive;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn.large {
+            padding: 1.5rem 3rem;
+            font-size: 1.3rem;
+            border-radius: 25px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* TV and Mobile Focus States */
+        .focusable {
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .focusable:focus {
+            outline: 4px solid var(--bright-yellow);
+            outline-offset: 4px;
+            transform: scale(1.05);
+            z-index: 100;
+            position: relative;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .bubblio-logo {
+                font-size: 3rem;
+            }
+            
+            .bubblio-logo::before,
+            .bubblio-logo::after {
+                display: none;
+            }
+            
+            .app-subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .access-btn {
+                padding: 1.5rem;
+                min-height: 80px;
+                font-size: 1.1rem;
+            }
+            
+            .btn-icon {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .bubblio-logo {
+                font-size: 2.5rem;
+            }
+            
+            .made-with-love {
+                font-size: 1rem;
+                margin-top: 2rem;
+            }
+        }
+
+        /* Additional styles for main app, video player, etc. would continue here */
+        /* For brevity, I'm including the essential styles above */
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-background">
+        <div class="emoji-float">😎</div>
+        <div class="emoji-float">🥶</div>
+        <div class="emoji-float">🗿</div>
+        <div class="emoji-float">🫠</div>
+        <div class="emoji-float">🦕</div>
+        <div class="emoji-float">💥</div>
+        <div class="emoji-float">☁</div>
+        <div class="emoji-float">☄️</div>
+        <div class="emoji-float">🐥</div>
+        <div class="emoji-float">🦴</div>
+        <div class="emoji-float">🎂</div>
+        <div class="emoji-float">🍼</div>
+        <div class="emoji-float">🍪</div>
+        <div class="emoji-float">🧊</div>
+        <div class="emoji-float">🏆</div>
+    </div>
+
+    <!-- Bubble Animation Container -->
+    <div id="bubble-animation" class="bubble-animation"></div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <div class="mascot-container">
+                    <div class="mascot-character">😎</div>
+                    <div class="mascot-bounce">🎬</div>
+                    <div class="mascot-character">🗿</div>
+                </div>
+                <h1 class="app-title">
+                    <div class="bubblio-logo">Bubblio</div>
+                </h1>
+                <p class="app-subtitle">Cool Videos for Epic Kids! 😎</p>
+                
+                <div class="access-options">
+                    <button class="access-btn guest-btn focusable" onclick="startGuestMode()" tabindex="0">
+                        <div class="btn-icon">😎</div>
+                        <div class="btn-text">
+                            <span class="btn-title">Guest Mode</span>
+                            <span class="btn-subtitle">Jump in and start watching!</span>
+                        </div>
+                    </button>
+                    
+                    <button class="access-btn profile-btn focusable" onclick="showProfileSetup()" tabindex="0">
+                        <div class="btn-icon">🎬</div>
+                        <div class="btn-text">
+                            <span class="btn-title">Create Profile</span>
+                            <span class="btn-subtitle">Make it yours!</span>
+                        </div>
+                    </button>
+                    
+                    <button class="access-btn existing-btn focusable" onclick="showExistingProfiles()" id="existing-profiles-btn" style="display: none;" tabindex="0">
+                        <div class="btn-icon">🏆</div>
+                        <div class="btn-text">
+                            <span class="btn-title">My Profiles</span>
+                            <span class="btn-subtitle">Choose your profile!</span>
+                        </div>
+                    </button>
+                </div>
+                
+                <!-- Made with love credit -->
+                <div class="made-with-love">
+                    Made with ❤️ by<br>
+                    <strong>Rishi Rohith</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Screen (simplified for demo) -->
+        <div id="main-app" class="screen">
+            <div style="text-align: center; padding: 4rem; color: white;">
+                <div style="font-size: 4rem; margin-bottom: 2rem;">🎬</div>
+                <h1 style="font-family: 'Fredoka One'; font-size: 3rem; margin-bottom: 1rem;">Welcome to Bubblio!</h1>
+                <p style="font-size: 1.5rem; margin-bottom: 2rem;">Video streaming coming soon...</p>
+                <button class="btn primary large" onclick="showWelcome()">← Back to Welcome</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Bubblio - Child-Friendly Video Streaming App
+        // Global Variables
+        const YOUTUBE_API_KEY = 'AIzaSyCRp1Gqj5yO2EHlUdlbTVipFWgFGAOM40Y';
+        let currentProfile = null;
+        let soundsEnabled = true;
+
+        // App State
+        let currentScreen = 'welcome-screen';
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // Check for existing profiles
+            checkExistingProfiles();
+            
+            // Initialize event listeners
+            initializeEventListeners();
+            
+            // Play welcome sound
+            playSound('welcome');
+            
+            console.log('🎬 Bubblio loaded successfully! Welcome to safe video fun! 🫧');
+        }
+
+        // Bubble Animation Function
+        function triggerBubbleAnimation() {
+            const bubbleContainer = document.getElementById('bubble-animation');
+            bubbleContainer.classList.add('active');
+            bubbleContainer.innerHTML = '';
+            
+            // Create multiple bubbles
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    bubble.textContent = '🫧';
+                    bubble.style.left = Math.random() * 100 + '%';
+                    bubble.style.animationDelay = Math.random() * 0.3 + 's';
+                    bubbleContainer.appendChild(bubble);
+                }, i * 50);
+            }
+            
+            // Remove animation after completion
+            setTimeout(() => {
+                bubbleContainer.classList.remove('active');
+                bubbleContainer.innerHTML = '';
+            }, 1500);
+        }
+
+        function initializeEventListeners() {
+            // Add click sounds to all buttons
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', () => {
+                    playSound('click');
+                });
+            });
+            
+            // Keyboard navigation support
+            document.addEventListener('keydown', handleKeyboardNavigation);
+        }
+
+        // Screen Management
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show target screen
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+                currentScreen = screenId;
+                playSound('transition');
+            }
+        }
+
+        // Welcome Screen Functions - FIXED
+        function startGuestMode() {
+            console.log('Starting guest mode...'); // Debug log
+            
+            triggerBubbleAnimation();
+            playSound('success');
+            
+            currentProfile = {
+                name: 'Guest',
+                emoji: '😎',
+                color: '#3B82F6',
+                isGuest: true
+            };
+            
+            // Show main app after bubble animation
+            setTimeout(() => {
+                console.log('Transitioning to main app...'); // Debug log
+                showMainApp();
+            }, 1200); // Increased delay to ensure animation completes
+        }
+
+        function showProfileSetup() {
+            triggerBubbleAnimation();
+            playSound('success');
+            
+            setTimeout(() => {
+                showScreen('profile-setup');
+            }, 1200);
+        }
+
+        function showExistingProfiles() {
+            triggerBubbleAnimation();
+            playSound('success');
+            
+            setTimeout(() => {
+                loadExistingProfiles();
+                showScreen('existing-profiles');
+            }, 1200);
+        }
+
+        function showWelcome() {
+            showScreen('welcome-screen');
+        }
+
+        function showMainApp() {
+            console.log('Showing main app screen...'); // Debug log
+            showScreen('main-app');
+        }
+
+        function checkExistingProfiles() {
+            const profiles = getProfiles();
+            const existingBtn = document.getElementById('existing-profiles-btn');
+            
+            if (profiles.length > 0) {
+                existingBtn.style.display = 'block';
+            }
+        }
+
+        function getProfiles() {
+            const stored = localStorage.getItem('bubblioProfiles');
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        function loadExistingProfiles() {
+            // Placeholder for profile loading
+            console.log('Loading existing profiles...');
+        }
+
+        // Enhanced Keyboard Navigation
+        function handleKeyboardNavigation(event) {
+            const key = event.key;
+            const focusedElement = document.activeElement;
+            
+            // Handle Enter and Space for focused elements
+            if (key === 'Enter' || key === ' ') {
+                if (focusedElement && focusedElement.classList.contains('focusable')) {
+                    event.preventDefault();
+                    focusedElement.click();
+                    return;
+                }
+            }
+            
+            // Global navigation keys
+            switch(key) {
+                case 'Escape':
+                    event.preventDefault();
+                    if (currentScreen !== 'welcome-screen') {
+                        showWelcome();
+                    }
+                    break;
+                case 'Home':
+                    event.preventDefault();
+                    showWelcome();
+                    break;
+            }
+        }
+
+        // Sound Functions
+        function playSound(type) {
+            if (!soundsEnabled) return;
+            
+            try {
+                // Create audio context for different sound types
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Different frequencies for different sounds
+                const sounds = {
+                    'click': 800,
+                    'success': [523, 659, 784], // C-E-G chord
+                    'transition': 600,
+                    'welcome': [440, 554, 659, 831], // A-C#-E-G# chord
+                };
+                
+                const frequency = sounds[type] || 600;
+                
+                if (Array.isArray(frequency)) {
+                    // Play chord
+                    frequency.forEach((freq, index) => {
+                        setTimeout(() => playTone(audioContext, freq, 0.2), index * 100);
+                    });
+                } else {
+                    playTone(audioContext, frequency, 0.3);
+                }
+            } catch (error) {
+                console.log('Audio not available:', error);
+            }
+        }
+
+        function playTone(audioContext, frequency, duration) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        // Mobile and TV detection
+        function isMobile() {
+            return window.innerWidth <= 768 || 'ontouchstart' in window;
+        }
+
+        function isTV() {
+            return window.innerWidth >= 1200 && window.innerHeight >= 600;
+        }
+
+        // Auto-focus for TV navigation
+        setTimeout(() => {
+            if (isTV()) {
+                const firstBtn = document.querySelector('.access-btn');
+                if (firstBtn) {
+                    firstBtn.focus();
+                }
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
