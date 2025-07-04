@@ -211,36 +211,189 @@ function checkExistingProfiles() {
 }
 
 function initializeEventListeners() {
+    // Make all interactive elements focusable for TV navigation
+    makeElementsFocusable();
+    
     // Profile setup emoji selector
     document.querySelectorAll('.emoji-option').forEach(option => {
         option.addEventListener('click', function() {
-            document.querySelectorAll('.emoji-option').forEach(opt => opt.classList.remove('selected'));
-            this.classList.add('selected');
-            playSound('click');
-            addSparkleEffect(this);
+            selectEmojiOption(this);
+        });
+        
+        // Touch and keyboard support
+        option.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            selectEmojiOption(this);
+        });
+        
+        option.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectEmojiOption(this);
+            }
         });
     });
     
     // Profile setup color selector
     document.querySelectorAll('.color-option').forEach(option => {
         option.addEventListener('click', function() {
-            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
-            this.classList.add('selected');
-            playSound('click');
-            addSparkleEffect(this);
+            selectColorOption(this);
+        });
+        
+        // Touch and keyboard support
+        option.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            selectColorOption(this);
+        });
+        
+        option.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectColorOption(this);
+            }
         });
     });
     
-    // Add click sounds to all buttons
+    // Add click sounds and touch support to all buttons
     document.querySelectorAll('button').forEach(button => {
         button.addEventListener('click', () => {
             playSound('click');
             addSparkleEffect(button);
         });
+        
+        // Touch support
+        button.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            playSound('click');
+            addSparkleEffect(button);
+        });
     });
     
-    // Keyboard navigation support
+    // Touch controls for video player
+    let touchStartY = 0;
+    let touchStartX = 0;
+    
+    document.addEventListener('touchstart', function(e) {
+        touchStartY = e.touches[0].clientY;
+        touchStartX = e.touches[0].clientX;
+    });
+    
+    document.addEventListener('touchend', function(e) {
+        if (!touchStartY || !touchStartX) return;
+        
+        const touchEndY = e.changedTouches[0].clientY;
+        const touchEndX = e.changedTouches[0].clientX;
+        const diffY = touchStartY - touchEndY;
+        const diffX = touchStartX - touchEndX;
+        
+        // Swipe gestures for video control
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+                // Swipe left - next video
+                nextVideo();
+            } else {
+                // Swipe right - previous video
+                previousVideo();
+            }
+        }
+        
+        touchStartY = 0;
+        touchStartX = 0;
+    });
+    
+    // Keyboard and remote navigation support
     document.addEventListener('keydown', handleKeyboardNavigation);
+    
+    // Prevent zoom on double tap for mobile
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(e) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+    
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        setTimeout(() => {
+            // Refresh layout after orientation change
+            if (window.innerHeight > window.innerWidth) {
+                document.body.classList.add('portrait');
+            } else {
+                document.body.classList.remove('portrait');
+            }
+        }, 100);
+    });
+    
+    // Auto-hide video controls on mobile after inactivity
+    let controlsTimeout;
+    const videoSection = document.getElementById('video-section');
+    if (videoSection) {
+        function hideControlsDelayed() {
+            clearTimeout(controlsTimeout);
+            controlsTimeout = setTimeout(() => {
+                if (isMobile()) {
+                    videoSection.classList.add('controls-hidden');
+                }
+            }, 3000);
+        }
+        
+        videoSection.addEventListener('touchstart', () => {
+            videoSection.classList.remove('controls-hidden');
+            hideControlsDelayed();
+        });
+    }
+}
+
+// Helper functions for mobile and TV support
+function selectEmojiOption(element) {
+    document.querySelectorAll('.emoji-option').forEach(opt => opt.classList.remove('selected'));
+    element.classList.add('selected');
+    playSound('click');
+    addSparkleEffect(element);
+}
+
+function selectColorOption(element) {
+    document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+    element.classList.add('selected');
+    playSound('click');
+    addSparkleEffect(element);
+}
+
+function makeElementsFocusable() {
+    // Add focusable class and tabindex to interactive elements
+    const selectors = [
+        '.access-btn',
+        '.category-pill',
+        '.video-card',
+        '.emoji-option',
+        '.color-option',
+        '.profile-card',
+        '.setting-btn',
+        '.small-control-btn',
+        '.action-btn',
+        'button:not([disabled])',
+        'input',
+        'select'
+    ];
+    
+    selectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(element => {
+            if (!element.hasAttribute('tabindex')) {
+                element.setAttribute('tabindex', '0');
+                element.classList.add('focusable');
+            }
+        });
+    });
+}
+
+function isMobile() {
+    return window.innerWidth <= 768 || 'ontouchstart' in window;
+}
+
+function isTV() {
+    return window.innerWidth >= 1200 && window.innerHeight >= 600;
 }
 
 // Screen Management
@@ -256,6 +409,9 @@ function showScreen(screenId) {
         targetScreen.classList.add('active');
         currentScreen = screenId;
         playSound('transition');
+        
+        // Re-make elements focusable after screen change
+        setTimeout(makeElementsFocusable, 100);
     }
 }
 
@@ -288,6 +444,14 @@ function showExistingProfiles() {
 
 function showWelcome() {
     showScreen('welcome-screen');
+    
+    // Focus first access button for TV navigation
+    setTimeout(() => {
+        const firstAccessBtn = document.querySelector('.access-btn:not([style*="none"])');
+        if (firstAccessBtn && isTV()) {
+            firstAccessBtn.focus();
+        }
+    }, 200);
 }
 
 // Profile Management
@@ -395,6 +559,14 @@ function showMainApp() {
     showScreen('main-app');
     loadVideos();
     startScreenTimeTracking();
+    
+    // Focus first category for TV navigation
+    setTimeout(() => {
+        const firstCategory = document.querySelector('.category-pill');
+        if (firstCategory && isTV()) {
+            firstCategory.focus();
+        }
+    }, 500);
 }
 
 // YouTube API Integration
@@ -493,8 +665,23 @@ function displayVideos() {
 
 function createVideoCard(video, index) {
     const card = document.createElement('div');
-    card.className = 'video-card';
+    card.className = 'video-card focusable';
+    card.setAttribute('tabindex', '0');
     card.onclick = () => playVideo(index);
+    
+    // Keyboard/remote support
+    card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            playVideo(index);
+        }
+    });
+    
+    // Touch support  
+    card.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        playVideo(index);
+    });
     
     const snippet = video.snippet;
     const videoId = snippet.resourceId.videoId;
@@ -982,34 +1169,303 @@ function showNotification(message, type) {
     playSound(type === 'success' ? 'success' : type === 'error' ? 'error' : 'toggle');
 }
 
-// Keyboard Navigation
+// Enhanced Keyboard Navigation for TV Remote and Mobile
 function handleKeyboardNavigation(event) {
-    if (currentScreen === 'main-app') {
-        switch(event.key) {
-            case ' ':
-                event.preventDefault();
-                togglePlayPause();
-                break;
-            case 'ArrowRight':
-                event.preventDefault();
+    const key = event.key;
+    const focusedElement = document.activeElement;
+    
+    // Handle Enter and Space for focused elements
+    if (key === 'Enter' || key === ' ') {
+        if (focusedElement && focusedElement.classList.contains('focusable')) {
+            event.preventDefault();
+            focusedElement.click();
+            return;
+        }
+    }
+    
+    // Navigation based on current screen
+    switch(currentScreen) {
+        case 'welcome-screen':
+            handleWelcomeNavigation(event);
+            break;
+        case 'main-app':
+            handleMainAppNavigation(event);
+            break;
+        case 'profile-setup':
+        case 'existing-profiles':
+        case 'settings-screen':
+            handleFormNavigation(event);
+            break;
+    }
+    
+    // Global navigation keys
+    switch(key) {
+        case 'Escape':
+            event.preventDefault();
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else if (currentScreen !== 'welcome-screen') {
+                // Go back to previous screen
+                if (currentScreen === 'settings-screen') {
+                    hideSettings();
+                } else {
+                    showWelcome();
+                }
+            }
+            break;
+        case 'Home':
+            event.preventDefault();
+            showWelcome();
+            break;
+    }
+}
+
+function handleWelcomeNavigation(event) {
+    const buttons = document.querySelectorAll('.access-btn:not([style*="none"])');
+    const currentIndex = Array.from(buttons).indexOf(document.activeElement);
+    
+    switch(event.key) {
+        case 'ArrowDown':
+            event.preventDefault();
+            const nextIndex = currentIndex < buttons.length - 1 ? currentIndex + 1 : 0;
+            buttons[nextIndex].focus();
+            break;
+        case 'ArrowUp':
+            event.preventDefault();
+            const prevIndex = currentIndex > 0 ? currentIndex - 1 : buttons.length - 1;
+            buttons[prevIndex].focus();
+            break;
+    }
+}
+
+function handleMainAppNavigation(event) {
+    const key = event.key;
+    
+    switch(key) {
+        case ' ':
+            event.preventDefault();
+            togglePlayPause();
+            playSound('click');
+            break;
+        case 'ArrowRight':
+            event.preventDefault();
+            if (event.ctrlKey || event.metaKey) {
                 nextVideo();
-                break;
-            case 'ArrowLeft':
-                event.preventDefault();
+            } else {
+                navigateGrid('right');
+            }
+            break;
+        case 'ArrowLeft':
+            event.preventDefault();
+            if (event.ctrlKey || event.metaKey) {
                 previousVideo();
+            } else {
+                navigateGrid('left');
+            }
+            break;
+        case 'ArrowDown':
+            event.preventDefault();
+            navigateGrid('down');
+            break;
+        case 'ArrowUp':
+            event.preventDefault();
+            navigateGrid('up');
+            break;
+        case 'f':
+        case 'F':
+            event.preventDefault();
+            toggleFullscreen();
+            break;
+        case 's':
+        case 'S':
+            event.preventDefault();
+            showSettings();
+            break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+            event.preventDefault();
+            const categoryButtons = document.querySelectorAll('.category-pill');
+            const index = parseInt(key) - 1;
+            if (categoryButtons[index]) {
+                categoryButtons[index].click();
+                categoryButtons[index].focus();
+            }
+            break;
+    }
+}
+
+function handleFormNavigation(event) {
+    const focusableElements = document.querySelectorAll('.focusable:not([style*="none"])');
+    const currentIndex = Array.from(focusableElements).indexOf(document.activeElement);
+    
+    switch(event.key) {
+        case 'ArrowRight':
+            event.preventDefault();
+            navigateForm('right', focusableElements, currentIndex);
+            break;
+        case 'ArrowLeft':
+            event.preventDefault();
+            navigateForm('left', focusableElements, currentIndex);
+            break;
+        case 'ArrowDown':
+            event.preventDefault();
+            navigateForm('down', focusableElements, currentIndex);
+            break;
+        case 'ArrowUp':
+            event.preventDefault();
+            navigateForm('up', focusableElements, currentIndex);
+            break;
+    }
+}
+
+function navigateGrid(direction) {
+    const videoCards = document.querySelectorAll('.video-card');
+    const categoryPills = document.querySelectorAll('.category-pill');
+    const currentFocused = document.activeElement;
+    
+    // Calculate grid columns based on screen size
+    const gridColumns = isMobile() ? (window.innerWidth <= 480 ? 1 : 2) : 
+                       isTV() ? 4 : 3;
+    
+    if (currentFocused.classList.contains('category-pill')) {
+        // Navigate within categories
+        const currentIndex = Array.from(categoryPills).indexOf(currentFocused);
+        
+        switch(direction) {
+            case 'right':
+                const nextCat = currentIndex < categoryPills.length - 1 ? currentIndex + 1 : 0;
+                categoryPills[nextCat].focus();
                 break;
-            case 'f':
-            case 'F':
-                event.preventDefault();
-                toggleFullscreen();
+            case 'left':
+                const prevCat = currentIndex > 0 ? currentIndex - 1 : categoryPills.length - 1;
+                categoryPills[prevCat].focus();
                 break;
-            case 'Escape':
-                if (document.fullscreenElement) {
-                    document.exitFullscreen();
+            case 'down':
+                if (videoCards.length > 0) {
+                    videoCards[0].focus();
                 }
                 break;
         }
+    } else if (currentFocused.classList.contains('video-card')) {
+        // Navigate within video grid
+        const currentIndex = Array.from(videoCards).indexOf(currentFocused);
+        let targetIndex = currentIndex;
+        
+        switch(direction) {
+            case 'right':
+                targetIndex = currentIndex + 1;
+                if (targetIndex >= videoCards.length) targetIndex = currentIndex;
+                break;
+            case 'left':
+                targetIndex = currentIndex - 1;
+                if (targetIndex < 0) targetIndex = currentIndex;
+                break;
+            case 'down':
+                targetIndex = currentIndex + gridColumns;
+                if (targetIndex >= videoCards.length) targetIndex = currentIndex;
+                break;
+            case 'up':
+                targetIndex = currentIndex - gridColumns;
+                if (targetIndex < 0) {
+                    // Focus on categories
+                    categoryPills[0].focus();
+                    return;
+                }
+                break;
+        }
+        
+        if (targetIndex !== currentIndex && videoCards[targetIndex]) {
+            videoCards[targetIndex].focus();
+            videoCards[targetIndex].scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+        }
+    } else {
+        // Focus on first category if nothing is focused
+        if (categoryPills.length > 0) {
+            categoryPills[0].focus();
+        }
     }
+}
+
+function navigateForm(direction, elements, currentIndex) {
+    if (elements.length === 0) return;
+    
+    // Handle emoji/color selector grids
+    const currentElement = elements[currentIndex];
+    if (currentElement && (currentElement.classList.contains('emoji-option') || 
+                          currentElement.classList.contains('color-option'))) {
+        const isEmoji = currentElement.classList.contains('emoji-option');
+        const selector = isEmoji ? '.emoji-option' : '.color-option';
+        const gridElements = document.querySelectorAll(selector);
+        const gridIndex = Array.from(gridElements).indexOf(currentElement);
+        const gridColumns = isMobile() ? (window.innerWidth <= 480 ? 3 : 4) : 
+                           isTV() ? 6 : 4;
+        
+        let targetIndex = gridIndex;
+        
+        switch(direction) {
+            case 'right':
+                targetIndex = gridIndex + 1;
+                if (targetIndex >= gridElements.length) targetIndex = gridIndex;
+                break;
+            case 'left':
+                targetIndex = gridIndex - 1;
+                if (targetIndex < 0) targetIndex = gridIndex;
+                break;
+            case 'down':
+                targetIndex = gridIndex + gridColumns;
+                if (targetIndex >= gridElements.length) targetIndex = gridIndex;
+                break;
+            case 'up':
+                targetIndex = gridIndex - gridColumns;
+                if (targetIndex < 0) {
+                    // Move to previous form section
+                    const prevElement = findPreviousFormElement(elements, currentIndex);
+                    if (prevElement) prevElement.focus();
+                    return;
+                }
+                break;
+        }
+        
+        if (targetIndex !== gridIndex && gridElements[targetIndex]) {
+            gridElements[targetIndex].focus();
+        }
+    } else {
+        // Regular form navigation
+        let targetIndex = currentIndex;
+        
+        switch(direction) {
+            case 'right':
+            case 'down':
+                targetIndex = currentIndex + 1;
+                if (targetIndex >= elements.length) targetIndex = 0;
+                break;
+            case 'left':
+            case 'up':
+                targetIndex = currentIndex - 1;
+                if (targetIndex < 0) targetIndex = elements.length - 1;
+                break;
+        }
+        
+        if (elements[targetIndex]) {
+            elements[targetIndex].focus();
+        }
+    }
+}
+
+function findPreviousFormElement(elements, currentIndex) {
+    for (let i = currentIndex - 1; i >= 0; i--) {
+        if (!elements[i].classList.contains('emoji-option') && 
+            !elements[i].classList.contains('color-option')) {
+            return elements[i];
+        }
+    }
+    return null;
 }
 
 // Voice Control (Basic implementation)
