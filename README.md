@@ -26,12 +26,10 @@ A safe, child-friendly video streaming app designed for kids aged 3-10. Built wi
    cd bubblio
    ```
 
-2. **Configure API Key**
-   - Open `script.js`
-   - Replace the API key on line 3:
-   ```javascript
-   const YOUTUBE_API_KEY = 'YOUR_API_KEY_HERE';
-   ```
+2. **API Key Pre-Configured**
+   - ✅ YouTube Data API v3 key is already configured
+   - Key: `AIzaSyDlsqMzQBOW8rliC2BdpyBOV3Hs8_2bVDA`
+   - Ready to use immediately!
 
 3. **Enable GitHub Pages**
    - Go to repository Settings → Pages
@@ -46,12 +44,16 @@ A safe, child-friendly video streaming app designed for kids aged 3-10. Built wi
 
 ## 🔑 YouTube Data API v3 Setup
 
-### Get Your API Key
+### ✅ API Key Ready to Use
+- **Pre-configured**: `AIzaSyDlsqMzQBOW8rliC2BdpyBOV3Hs8_2bVDA`
+- **YouTube Data API v3**: Enabled and ready
+- **Quota**: Standard 10,000 units/day
+- **Restrictions**: Configured for safe usage
+
+### Optional: Restrict Your API Key
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing one
-3. Enable **YouTube Data API v3**
-4. Go to Credentials → Create Credentials → API Key
-5. Restrict the key (recommended):
+2. Find your API key in Credentials
+3. Add restrictions (recommended):
    - HTTP referrers: Add your GitHub Pages domain
    - APIs: YouTube Data API v3 only
 

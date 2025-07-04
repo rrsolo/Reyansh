@@ -1,6 +1,6 @@
 // Bubblio - Child-Friendly Video Streaming App
 // Global Variables - Loaded from config.js
-const YOUTUBE_API_KEY = CONFIG?.YOUTUBE_API_KEY || 'AIzaSyCRp1Gqj5yO2EHlUdlbTVipFWgFGAOM40Y';
+const YOUTUBE_API_KEY = CONFIG?.YOUTUBE_API_KEY || 'AIzaSyDlsqMzQBOW8rliC2BdpyBOV3Hs8_2bVDA';
 const PLAYLISTS = CONFIG?.PLAYLISTS || {
     'PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d': 'Epic Learning Videos',
     'PLO2NpzUDdem3WVqnpyzHHlu_f8att4bsH': 'Legendary Adventures'

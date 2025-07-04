@@ -4,7 +4,7 @@
 const CONFIG = {
     // YouTube Data API v3 Key
     // Get from: https://console.cloud.google.com/
-    YOUTUBE_API_KEY: 'AIzaSyCRp1Gqj5yO2EHlUdlbTVipFWgFGAOM40Y',
+    YOUTUBE_API_KEY: 'AIzaSyDlsqMzQBOW8rliC2BdpyBOV3Hs8_2bVDA',
     
     // Default Playlists (Replace with your own)
     PLAYLISTS: {

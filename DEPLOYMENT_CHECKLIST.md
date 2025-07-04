@@ -33,10 +33,10 @@ bubblio/
 
 ## 🚀 Ready to Deploy
 
-### 1. Update API Key (Required)
+### 1. ✅ API Key Ready
 ```javascript
-// In config.js, update line 6:
-YOUTUBE_API_KEY: 'YOUR_API_KEY_HERE'
+// Already configured in config.js:
+YOUTUBE_API_KEY: 'AIzaSyDlsqMzQBOW8rliC2BdpyBOV3Hs8_2bVDA'
 ```
 
 ### 2. GitHub Pages Setup
