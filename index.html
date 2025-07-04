@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CritterTube - Cool Videos for Epic Kids</title>
+    <title>Bubblio - Cool Videos for Epic Kids</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -27,6 +27,9 @@
         <div class="emoji-float">🏆</div>
     </div>
 
+    <!-- Bubble Animation Container -->
+    <div id="bubble-animation" class="bubble-animation"></div>
+
     <!-- Main App Container -->
     <div class="app-container">
         
@@ -38,7 +41,7 @@
                     <div class="mascot-bounce">🎬</div>
                     <div class="mascot-character">🗿</div>
                 </div>
-                <h1 class="app-title">🎬 CritterTube</h1>
+                <h1 class="app-title">🎬 Bubblio</h1>
                 <p class="app-subtitle">Cool Videos for Epic Kids! 😎</p>
                 
                 <div class="access-options">
@@ -65,6 +68,12 @@
                             <span class="btn-subtitle">Choose your profile!</span>
                         </div>
                     </button>
+                </div>
+                
+                <!-- Made with love credit -->
+                <div class="made-with-love">
+                    Made with ❤️ by<br>
+                    <strong>Rishi Rohith</strong>
                 </div>
             </div>
         </div>
@@ -174,7 +183,7 @@
                 <div class="header-left">
                     <div class="app-logo">
                         <span class="logo-icon">🎬</span>
-                        <span class="logo-text">CritterTube</span>
+                        <span class="logo-text">Bubblio</span>
                     </div>
                 </div>
                 
@@ -276,6 +285,12 @@
                     <h2>Epic Settings</h2>
                 </div>
                 
+                <!-- Note from Rishi -->
+                <div class="rishi-note">
+                    <div class="note-header">📌 Note from Rishi:</div>
+                    <p>Hey! This app was made just for my little brother to enjoy safe and fun videos. It's a personal project — not for public sharing or app stores. Please keep it private and just enjoy the love behind it. ❤️</p>
+                </div>
+                
                 <div class="settings-section">
                     <h3>🎨 Appearance</h3>
                     <div class="setting-item">
@@ -323,7 +338,7 @@
                 <div class="settings-section">
                     <h3>📺 Video Playlist</h3>
                     <div class="setting-item">
-                        <span class="setting-icon">�</span>
+                        <span class="setting-icon">📺</span>
                         <div class="setting-content">
                             <label>Choose Playlist:</label>
                             <select id="playlist-select" onchange="changePlaylist()">

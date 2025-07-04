@@ -1,4 +1,4 @@
-// CritterTube - Child-Friendly Video Streaming App
+// Bubblio - Child-Friendly Video Streaming App
 // Global Variables
 const YOUTUBE_API_KEY = 'AIzaSyCRp1Gqj5yO2EHlUdlbTVipFWgFGAOM40Y';
 const PLAYLISTS = {
@@ -47,18 +47,43 @@ function initializeApp() {
     initializeMascot();
 }
 
+// Bubble Animation Function
+function triggerBubbleAnimation() {
+    const bubbleContainer = document.getElementById('bubble-animation');
+    bubbleContainer.classList.add('active');
+    bubbleContainer.innerHTML = '';
+    
+    // Create multiple bubbles
+    for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.textContent = '🫧';
+            bubble.style.left = Math.random() * 100 + '%';
+            bubble.style.animationDelay = Math.random() * 0.3 + 's';
+            bubbleContainer.appendChild(bubble);
+        }, i * 50);
+    }
+    
+    // Remove animation after completion
+    setTimeout(() => {
+        bubbleContainer.classList.remove('active');
+        bubbleContainer.innerHTML = '';
+    }, 1500);
+}
+
 // Mascot functionality
 function initializeMascot() {
     const mascotMessages = [
         "Yo! Pick an epic video to watch! 🎬",
-        "Ready to learn something cool? �",
-        "Time for some epic music! �",
+        "Ready to learn something cool? 💻",
+        "Time for some epic music! 🎹",
         "Let's watch something legendary! 🏆",
         "Check out these awesome videos! 😎",
         "What's your vibe today? 🔮",
         "These videos are straight fire! 💥",
         "Chill time with cool videos! 🧊",
-        "Level up with epic content! �"
+        "Level up with epic content! 💻"
     ];
     
     setInterval(() => {
@@ -90,9 +115,9 @@ function selectCategory(category) {
     
     // Update mascot message based on category
     const categoryMessages = {
-        'all': "Epic! All the best videos are here! �",
-        'learning': "Time to level up your brain! �",
-        'music': "Let's vibe to some epic beats! �",
+        'all': "Epic! All the best videos are here! 🎬",
+        'learning': "Time to level up your brain! 💻",
+        'music': "Let's vibe to some epic beats! 🎹",
         'shows': "Legendary shows coming up! 🏆",
         'games': "Epic fun time ahead! 💥"
     };
@@ -111,7 +136,7 @@ function startVoiceSearch() {
         recognition.lang = 'en-US';
         
         recognition.onstart = function() {
-            updateMascotMessage("I'm listening! What epic video do you want? �");
+            updateMascotMessage("I'm listening! What epic video do you want? 🎬");
             playSound('voice-start');
         };
         
@@ -133,7 +158,7 @@ function startVoiceSearch() {
 }
 
 function handleVoiceSearch(command) {
-    updateMascotMessage(`You said: "${command}" - Finding epic videos! �`);
+    updateMascotMessage(`You said: "${command}" - Finding epic videos! 🎬`);
     
     // Simple keyword matching for categories
     if (command.includes('learn') || command.includes('education')) {
@@ -160,18 +185,18 @@ function handleVoiceSearch(command) {
 // Video action buttons (placeholders for now)
 function likeVideo() {
     showSuccess("That's epic! 🥇");
-    updateMascotMessage("Legendary choice! This video is fire! �");
+    updateMascotMessage("Legendary choice! This video is fire! 💥");
     playSound('like');
 }
 
 function shareVideo() {
-    showSuccess("Shared that epic video! �");
-    updateMascotMessage("Spread the epic vibes! Your friends will love it! �");
+    showSuccess("Shared that epic video! 🎉");
+    updateMascotMessage("Spread the epic vibes! Your friends will love it! 🎉");
     playSound('share');
 }
 
 function saveVideo() {
-    showSuccess("Video saved for later! �");
+    showSuccess("Video saved for later! 🎉");
     updateMascotMessage("Cool! You can watch this epic content anytime! 🏆");
     playSound('save');
 }
@@ -236,14 +261,20 @@ function showScreen(screenId) {
 
 // Welcome Screen Functions
 function startGuestMode() {
+    triggerBubbleAnimation(); // Add bubble animation
+    
     currentProfile = {
         name: 'Guest',
-        emoji: '�',
+        emoji: '😎',
         color: '#3B82F6',
         isGuest: true
     };
     updateCurrentProfile();
-    showMainApp();
+    
+    // Delay the screen transition to allow bubble animation to play
+    setTimeout(() => {
+        showMainApp();
+    }, 800);
 }
 
 function showProfileSetup() {
@@ -292,18 +323,25 @@ function createProfile() {
     saveProfile(profile);
     currentProfile = profile;
     updateCurrentProfile();
-    showMainApp();
+    
+    triggerBubbleAnimation(); // Add bubble animation
+    
+    // Delay the screen transition to allow bubble animation to play
+    setTimeout(() => {
+        showMainApp();
+    }, 800);
+    
     showSuccess('Profile created successfully! 🎉');
 }
 
 function saveProfile(profile) {
     const profiles = getProfiles();
     profiles.push(profile);
-    localStorage.setItem('critterTubeProfiles', JSON.stringify(profiles));
+    localStorage.setItem('bubblioProfiles', JSON.stringify(profiles));
 }
 
 function getProfiles() {
-    const stored = localStorage.getItem('critterTubeProfiles');
+    const stored = localStorage.getItem('bubblioProfiles');
     return stored ? JSON.parse(stored) : [];
 }
 
@@ -329,9 +367,16 @@ function loadExistingProfiles() {
 }
 
 function selectProfile(profile) {
+    triggerBubbleAnimation(); // Add bubble animation
+    
     currentProfile = profile;
     updateCurrentProfile();
-    showMainApp();
+    
+    // Delay the screen transition to allow bubble animation to play
+    setTimeout(() => {
+        showMainApp();
+    }, 800);
+    
     showSuccess(`Welcome back, ${profile.name}! 🎉`);
 }
 
@@ -551,7 +596,7 @@ function hideSettings() {
 function loadSettingsValues() {
     // Load dark mode setting
     const darkModeToggle = document.getElementById('dark-mode-toggle');
-    darkModeToggle.checked = localStorage.getItem('critterTubeDarkMode') === 'true';
+    darkModeToggle.checked = localStorage.getItem('bubblioDarkMode') === 'true';
     
     // Load sound setting
     const soundToggle = document.getElementById('sound-toggle');
@@ -572,13 +617,13 @@ function loadSettingsValues() {
 function toggleDarkMode() {
     const isDarkMode = document.getElementById('dark-mode-toggle').checked;
     document.body.classList.toggle('dark-mode', isDarkMode);
-    localStorage.setItem('critterTubeDarkMode', isDarkMode.toString());
+    localStorage.setItem('bubblioDarkMode', isDarkMode.toString());
     playSound('toggle');
 }
 
 function toggleSounds() {
     soundsEnabled = document.getElementById('sound-toggle').checked;
-    localStorage.setItem('critterTubeSounds', soundsEnabled.toString());
+    localStorage.setItem('bubblioSounds', soundsEnabled.toString());
     if (soundsEnabled) {
         playSound('toggle');
     }
@@ -587,7 +632,7 @@ function toggleSounds() {
 function setTimeLimit() {
     const newLimit = parseInt(document.getElementById('time-limit-select').value);
     timeLimit = newLimit;
-    localStorage.setItem('critterTubeTimeLimit', timeLimit.toString());
+    localStorage.setItem('bubblioTimeLimit', timeLimit.toString());
     
     updateTimeRemainingDisplay();
     
@@ -604,7 +649,7 @@ function changePlaylist() {
     const newPlaylist = document.getElementById('playlist-select').value;
     if (newPlaylist !== currentPlaylist) {
         currentPlaylist = newPlaylist;
-        localStorage.setItem('critterTubePlaylist', currentPlaylist);
+        localStorage.setItem('bubblioPlaylist', currentPlaylist);
         loadVideos();
         showSuccess('Playlist changed! 🎵');
     }
@@ -641,7 +686,7 @@ function deleteProfile() {
         if (confirm(`Are you sure you want to delete ${currentProfile.name}'s profile?`)) {
             const profiles = getProfiles();
             const updatedProfiles = profiles.filter(p => p.id !== currentProfile.id);
-            localStorage.setItem('critterTubeProfiles', JSON.stringify(updatedProfiles));
+            localStorage.setItem('bubblioProfiles', JSON.stringify(updatedProfiles));
             
             showSuccess('Profile deleted successfully!');
             showWelcome();
@@ -1007,19 +1052,19 @@ function handleVoiceCommand(command) {
 // Load Settings on Start
 function loadSettings() {
     // Load dark mode
-    const darkMode = localStorage.getItem('critterTubeDarkMode') === 'true';
+    const darkMode = localStorage.getItem('bubblioDarkMode') === 'true';
     if (darkMode) {
         document.body.classList.add('dark-mode');
     }
     
     // Load sounds setting
-    soundsEnabled = localStorage.getItem('critterTubeSounds') !== 'false';
+    soundsEnabled = localStorage.getItem('bubblioSounds') !== 'false';
     
     // Load time limit
-    timeLimit = parseInt(localStorage.getItem('critterTubeTimeLimit')) || 0;
+    timeLimit = parseInt(localStorage.getItem('bubblioTimeLimit')) || 0;
     
     // Load playlist
-    currentPlaylist = localStorage.getItem('critterTubePlaylist') || 'PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d';
+    currentPlaylist = localStorage.getItem('bubblioPlaylist') || 'PLO2NpzUDdem0ZSJqOsKpJ7H1rikJTIX2d';
 }
 
 // Touch/Swipe Support for Mobile
@@ -1073,4 +1118,4 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(initializeVoiceControl, 2000);
 });
 
-console.log('🎬 CritterTube loaded successfully! Welcome to safe video fun! 🐶🐱🐼');
+console.log('🎬 Bubblio loaded successfully! Welcome to safe video fun! 🐶🐱🐼');
